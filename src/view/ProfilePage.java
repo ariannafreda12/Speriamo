@@ -146,13 +146,14 @@ public class ProfilePage {
 					tableView.setItems(list);		
 				}
 			}
+		
 	      
-			
-				tableView.addEventHandler(MouseEvent.MOUSE_CLICKED, (event -> {
+			tableView.getSelectionModel().selectedIndexProperty()
+            .addListener((observable, oldValue, newValue) -> {
 					         	
 	            	
 	            	String t = tableView.getSelectionModel().getSelectedCells().get(0).getTableColumn().getCellObservableValue(tableView.getSelectionModel().getSelectedCells().get(0).getRow()).getValue().toString();
-	            	((Node)(event.getSource())).getScene().getWindow().hide();
+	            	//((Node)(event.getSource())).getScene().getWindow().hide();
 	            try { 
 	                   	
 	            	
@@ -176,7 +177,7 @@ public class ProfilePage {
 	            } catch (Exception e) {
 	                e.printStackTrace();
 	            }
-	        }));
+	        });
 				
 				
 				notes=NotesManager.userNotes(ub.getUsername()); 
