@@ -2,6 +2,7 @@ package view;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import bean.NotesBean;
 import bean.RecipeBean;
@@ -55,6 +56,9 @@ public class ProfilePage {
 	
 	GraphicController gc = new GraphicController();
 	
+	static Logger logger = Logger.getAnonymousLogger();
+	private static final String CONTEXT = "context";
+	
 	//instance of UserProfileManager for get user's recipes
 	
 	UserProfileManager upm= UserProfileManager.getInstance();
@@ -77,6 +81,10 @@ public class ProfilePage {
         graphicController.notePage();
 	}
 
+	public void closeProfilePage(MouseEvent event)  {
+		((Node)(event.getSource())).getScene().getWindow().hide();
+    
+	}
 	public void start() {
 			
 		Stage ingStage = new Stage();
@@ -152,7 +160,7 @@ public class ProfilePage {
 					         	
 	            	
 	            	
-	            	((Node)(event.getSource())).getScene().getWindow().hide();
+	            	
 	            try { 
 	                   	
 	            	
@@ -169,7 +177,7 @@ public class ProfilePage {
 	              		upb.setURecBeanTime(up.getTime());
 	              		
 	            		upm.setUserProfile(upb);
-	            		
+	            		closeProfilePage(event);
 	            		gc.userRecipePage();
 	            	}
 	            	
@@ -220,7 +228,7 @@ public class ProfilePage {
 	        
 		} catch (IOException e1) {
 			
-			e1.printStackTrace();
+			logger.log(null, CONTEXT,e1);
 		}
 		
     
