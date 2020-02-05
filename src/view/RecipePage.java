@@ -81,6 +81,22 @@ public class RecipePage{
     	GraphicController graphicController = new GraphicController();
         graphicController.notePage();
 	}
+	
+	public boolean reviewStudy(String title,String username,int rev) {
+		
+		boolean check= false;
+		if ((rm.reviewRecipe(title, rev))) {
+			check=rm.addReviewRecipe(username, title);
+			 if(check) {
+				 check=true;
+			 }
+		
+	}
+		return check;
+		
+
+         
+}
 
 	public void startRecPage() {
 			
@@ -228,12 +244,11 @@ public class RecipePage{
 	    	likebtn.setLayoutX(665);
 	    	likebtn.setLayoutY(505);
 	    	likebtn.setFont(Font.font(SYSTEM, FontWeight.BOLD, FontPosture.ITALIC,18));
-	    	System.out.println(rb.getRecBeanReview());
 	    	likebtn.setOnAction(new EventHandler<ActionEvent>() {
 				public void handle(ActionEvent event) {
-					if ((rm.reviewRecipe(rb.getRecBeanTitle(), rb.getRecBeanReview()))) {
-						boolean check=rm.addReviewRecipe(ub.getUsername(), rb.getRecBeanTitle());
-						 if(check) {
+					
+						boolean checkRev=reviewStudy(rb.getRecBeanTitle(),ub.getUsername(),rb.getRecBeanReview());
+						 if(checkRev) {
 							 Alert alert = new Alert(AlertType.CONFIRMATION);
 							 alert.setTitle("Success");
 							 alert.setHeaderText("Success!");
@@ -246,7 +261,7 @@ public class RecipePage{
 							
 							
 					
-					}
+					
 				try {
 					event.wait(0);
 				} catch (InterruptedException e) {
@@ -275,9 +290,9 @@ public class RecipePage{
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-	
-             
 	}
+		
+		
 	
 	public void saveRecipe(){
 		String name=lm.getUser().getUsername();
