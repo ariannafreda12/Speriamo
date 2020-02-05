@@ -148,17 +148,16 @@ public class ProfilePage {
 			}
 		
 	      
-			tableView.getSelectionModel().selectedIndexProperty()
-            .addListener((observable, oldValue, newValue) -> {
+			tableView.addEventHandler(MouseEvent.MOUSE_CLICKED, (event -> {
 					         	
 	            	
-	            	String t = tableView.getSelectionModel().getSelectedCells().get(0).getTableColumn().getCellObservableValue(tableView.getSelectionModel().getSelectedCells().get(0).getRow()).getValue().toString();
-	            	//((Node)(event.getSource())).getScene().getWindow().hide();
+	            	
+	            	((Node)(event.getSource())).getScene().getWindow().hide();
 	            try { 
 	                   	
 	            	
 	            	
-	            	up = upm.chooseUserRecipe(t);
+	            	up = upm.chooseUserRecipe(tableView.getSelectionModel().getSelectedCells().get(0).getTableColumn().getCellObservableValue(tableView.getSelectionModel().getSelectedCells().get(0).getRow()).getValue().toString());
 	            	
 	            	if(up!=null) { 
 	              		upb.setURecBeanTitle(up.getTitle());
@@ -177,7 +176,7 @@ public class ProfilePage {
 	            } catch (Exception e) {
 	                e.printStackTrace();
 	            }
-	        });
+	        }));
 				
 				
 				notes=NotesManager.userNotes(ub.getUsername()); 
