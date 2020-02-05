@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
+
 import bean.RecipeBean;
 import bean.UserBean;
 import controller.GraphicController;
@@ -56,6 +58,12 @@ public class FoundRecipes {
     RecipeManager rm= RecipeManager.getInstance();
 	RecipeBean rb=rm.getRecipe();
 	
+	static Logger logger = Logger.getAnonymousLogger();
+	
+	Recipe rc = new Recipe(null,null,null,null,null,null,0); 
+	
+	private static final String CONTEXT = "context";
+	
 	LoginManager lm =LoginManager.getInstance();
 	UserBean ub= lm.getUser();
 	
@@ -96,7 +104,7 @@ public class FoundRecipes {
         try {
 			graphicController.start(stage);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.log(null, CONTEXT,e);
 		}
 	}
 	
@@ -105,7 +113,7 @@ public class FoundRecipes {
         graphicController.notePage();
 	}
 	
-	public void startFoundRecPage(){
+	public void startFoundRec(){
 		Stage ingStageFoundRecPage = new Stage();
 		FXMLLoader loader = new FXMLLoader (FoundRecipes.class.getResource("found_recipes.fxml"));
 		AnchorPane root;
@@ -247,20 +255,17 @@ public class FoundRecipes {
 			tableView.addEventHandler(MouseEvent.MOUSE_CLICKED, (event -> {
 	            
 	          
-	            try { 
+	            try {  	
 	            	
-	            	TablePosition<?, ?> pos= tableView.getSelectionModel().getSelectedCells().get(0);
-	            	int row = pos.getRow();
-	            	TableColumn<?, ?> col = pos.getTableColumn();
-	            	String t = (String) col.getCellObservableValue(row).getValue().toString();
-	            	Recipe rc = new Recipe(null,null,null,null,null,null,0); 
-	            	rc= rm.chooseRecipe(t);
+	           	            
+	            	rc= rm.chooseRecipe(tableView.getSelectionModel().getSelectedCells().get(0).getTableColumn().getCellObservableValue(tableView.getSelectionModel().getSelectedCells().get(0).getRow()).getValue().toString());
 	            	
-	            	if(rb.validateRec(t)) { 
-	              		rb.setRecBeanTitle(t);
+	            	if(rb.validateRec(tableView.getSelectionModel().getSelectedCells().get(0).getTableColumn().getCellObservableValue(tableView.getSelectionModel().getSelectedCells().get(0).getRow()).getValue().toString())) { 
+	              		rb.setRecBeanTitle(rc.getTitle());
 	              		rb.setRecBeanPreparation(rc.getPreparation());
 	              		rb.setRecBeanNecessary(rc.getNecessary());
 	              		rb.setRecBeanTime(rc.getTime());
+	              		rb.setRecBeanReview(rc.getReview());
 	            		rm.setRecipe(rb);
 	            		gc.showRecipe();
 	            	}

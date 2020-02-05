@@ -22,7 +22,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableView;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -200,23 +199,15 @@ public class ProfilePage {
 					}
 				}
 			
-			tableView2.addEventHandler(MouseEvent.MOUSE_CLICKED, (event -> {
-				((Node)(event.getSource())).getScene().getWindow().hide();
-	          
-	            try { 
-	            	TablePosition<?, ?> pos= tableView2.getSelectionModel().getSelectedCells().get(0);
-	            	int row = pos.getRow();
-	            	TableColumn<?, ?> col = pos.getTableColumn();
-	            	String n = (String) col.getCellObservableValue(row).getValue().toString();
+			tableView2.addEventHandler(MouseEvent.MOUSE_CLICKED, (event -> {	          
+	            try { 	            	
+	            	nc = nm.chooseNote(tableView2.getSelectionModel().getSelectedCells().get(0).getTableColumn().getCellObservableValue(tableView2.getSelectionModel().getSelectedCells().get(0).getRow()).getValue().toString());
 	            	
-	            	nc = nm.chooseNote(n);
-	            	
-					if(nb.validateNote(n)) { 
-	              		nb.setNote(n);
+					if(nb.validateNote(tableView2.getSelectionModel().getSelectedCells().get(0).getTableColumn().getCellObservableValue(tableView2.getSelectionModel().getSelectedCells().get(0).getRow()).getValue().toString())) { 
+	              		nb.setNote(nc.getNote());
 	              		nb.setUsername(nc.getUsername());
 	              		nm.setNote(nb);
-	              		
-	              		
+	              		closeProfilePage(event);
 	            		gc.openNotePage();
 	            	}
 	            } catch (Exception e) {

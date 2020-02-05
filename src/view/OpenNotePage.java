@@ -49,7 +49,7 @@ public class OpenNotePage {
 	
 	private static final String SYSTEM = "System";
 	
-	public void startOpenNotePage (){
+	public void startOpNotePage (){
 		
 		
 		AnchorPane root = new AnchorPane();

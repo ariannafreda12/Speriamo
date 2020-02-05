@@ -1,7 +1,6 @@
 package view;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.logging.Logger;
 
 import bean.UserBean;
@@ -38,7 +37,7 @@ public class ChangePasswordPage {
 	static Logger logger = Logger.getAnonymousLogger();
 	 private static final String CONTEXT = "context";
 	
-	public void changePassword(ActionEvent actionEvent) throws SQLException {
+	public void changePassword(ActionEvent actionEvent) {
 		
 		LoginManager dbm = LoginManager.getInstance();
 		boolean pChanged;
@@ -73,6 +72,11 @@ public class ChangePasswordPage {
                
                pChanged= dbm.changePassword(user, psw1);
                if(pChanged) {
+            	   Alert alert = new Alert(AlertType.CONFIRMATION);
+          			alert.setTitle("Success");
+          			alert.setHeaderText("Success!");
+          			alert.setContentText("Password changed successfully");
+          			alert.showAndWait();
                
             	GraphicController graphicController = new GraphicController();
                 ((Node)(actionEvent.getSource())).getScene().getWindow().hide();
@@ -82,11 +86,7 @@ public class ChangePasswordPage {
 					
 					logger.log(null, CONTEXT,e);
 				}
-                Alert alert = new Alert(AlertType.CONFIRMATION);
-       			alert.setTitle("Success");
-       			alert.setHeaderText("Success!");
-       			alert.setContentText("Password changed successfully");
-       			alert.showAndWait();
+               
        			}
             }
             else {

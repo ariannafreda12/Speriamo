@@ -2,6 +2,7 @@ package view;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import bean.RecipeBean;
 import bean.UserBean;
@@ -45,8 +46,11 @@ public class RecipePage{
 	
 	UserProfileManager upm= UserProfileManager.getInstance();
 	
-	private Label reviewLabel = new Label();
-	private Button likebtn = new Button();	
+	public Label reviewLabel = new Label();
+	public Button likebtn = new Button();	
+	
+	static Logger logger = Logger.getAnonymousLogger();
+	private static final String CONTEXT = "context";
 	
 	private static final String SYSTEM = "System";
 	
@@ -78,7 +82,7 @@ public class RecipePage{
         graphicController.notePage();
 	}
 
-	public void startRecipePage() {
+	public void startRecPage() {
 			
 		Stage ingStage = new Stage();
 		FXMLLoader loader = new FXMLLoader (RecipePage.class.getResource("recipePage.fxml"));
@@ -224,25 +228,33 @@ public class RecipePage{
 	    	likebtn.setLayoutX(665);
 	    	likebtn.setLayoutY(505);
 	    	likebtn.setFont(Font.font(SYSTEM, FontWeight.BOLD, FontPosture.ITALIC,18));
-	    	
+	    	System.out.println(rb.getRecBeanReview());
 	    	likebtn.setOnAction(new EventHandler<ActionEvent>() {
 				public void handle(ActionEvent event) {
 					if ((rm.reviewRecipe(rb.getRecBeanTitle(), rb.getRecBeanReview()))) {
-						if ((rm.addReviewRecipe(ub.getUsername(), rb.getRecBeanTitle()))) {
-						
-						 Alert alert = new Alert(AlertType.CONFIRMATION);
-							alert.setTitle("Success");
-							alert.setHeaderText("Success!");
-							alert.setContentText("Thanks for your opinion");
-							alert.showAndWait();
-							likebtn.setVisible(false);
-							reviewLabel.setText("You like it!");
+						boolean check=rm.addReviewRecipe(ub.getUsername(), rb.getRecBeanTitle());
+						 if(check) {
+							 Alert alert = new Alert(AlertType.CONFIRMATION);
+							 alert.setTitle("Success");
+							 alert.setHeaderText("Success!");
+							 alert.setContentText("Thanks for your opinion");
+							 alert.showAndWait();
+							 likebtn.setVisible(false);
+							 reviewLabel.setText("You like it!");
+							 
+						 }
 							
+							
+					
 					}
-				
+				try {
+					event.wait(0);
+				} catch (InterruptedException e) {
+					logger.log(null, CONTEXT,e);
+				}
 					}
 				}
-			});
+			);
 	    	
 	    	if ((rm.checkReviewRecipe(ub.getUsername(), rb.getRecBeanTitle()))) {
 				likebtn.setVisible(false);
