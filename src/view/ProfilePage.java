@@ -149,11 +149,9 @@ public class ProfilePage {
 	      
 			
 				tableView.addEventHandler(MouseEvent.MOUSE_CLICKED, (event -> {
-					
-					TablePosition<?, ?> pos= tableView.getSelectionModel().getSelectedCells().get(0);
-	            	int row = pos.getRow();
-	            	TableColumn<?, ?> col = pos.getTableColumn();
-	            	String t = col.getCellObservableValue(row).getValue().toString();
+					         	
+	            	
+	            	String t = tableView.getSelectionModel().getSelectedCells().get(0).getTableColumn().getCellObservableValue(tableView.getSelectionModel().getSelectedCells().get(0).getRow()).getValue().toString();
 	            	((Node)(event.getSource())).getScene().getWindow().hide();
 	            try { 
 	                   	
