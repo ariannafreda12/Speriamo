@@ -182,6 +182,8 @@ public class HomePage {
     private TextArea tf = new TextArea();                     
     private Button se= new Button();
     private TextArea necLabel = new TextArea();
+    private TableColumn<Recipe,String> column1 = new TableColumn<>("Title");
+    private TableColumn<Recipe,String> column2= new TableColumn<> ("Like");
 	
 	public void startHomePage(){
 		
@@ -193,13 +195,11 @@ public class HomePage {
 	        Scene scene = new Scene(root, 800, 600);
 	        ingStage.setScene(scene);
 	        
-	       
 	        titleLabel.setAlignment(Pos.TOP_LEFT);
 	        titleLabel.setFont(Font.font(SYSTEM,FontWeight.BOLD, FontPosture.ITALIC, 20));
 	        titleLabel.setTextFill(Color.FIREBRICK);
 	        titleLabel.setLayoutX(79);
 	        titleLabel.setLayoutY(129);
-	        
 	        
 	        recLabel.setAlignment(Pos.TOP_LEFT);
 	        recLabel.setFont(Font.font(SYSTEM,FontWeight.BOLD, FontPosture.ITALIC, 20));
@@ -241,11 +241,11 @@ public class HomePage {
 	       
 	        tableView.setPrefWidth(300);
 	        
-	        TableColumn<Recipe,String> column1 = new TableColumn<>("Title");
+	        
 	        column1.setCellValueFactory(new PropertyValueFactory<>("title"));      
 	        tableView.getColumns().add(column1);
 	        
-	        TableColumn<Recipe,String> column2= new TableColumn<> ("Like");
+	        
 	        column2.setCellValueFactory(new PropertyValueFactory<>("review"));      
 	        tableView.getColumns().add(column2);
 	        
@@ -332,7 +332,7 @@ public class HomePage {
 	    
 	        root.getChildren().addAll(scroll,scroll2,search, tf, se);
 	             
-	         if (lm.getUser().getUsername()=="Chef")    {
+	         if (lm.getUser().getUsername()=="Chef" || (fav=UserProfileManager.favRecipe(lm.getUser().getUsername()))==null)    {
 	        	daily=RecipeManager.dailyRecipe(); 
 	        	recLabel.setText("Try daily recipe:");
 	        	title.setText("  " + daily.getTitle());
@@ -351,17 +351,7 @@ public class HomePage {
 	        	necLabel.setText(fav.getNecessary());
 	        	prepLabel.setText(fav.getPreparation());
 	        	
-	        }else{
-	        	recLabel.setText("You haven't a favourite recipe yet");
-	        	title.setVisible(false);
-	        	cat.setVisible(false);
-	        	diff.setVisible(false);
-	        	prep.setVisible(false);
-	        	necLabel.setVisible(false);
-	        	prepLabel.setVisible(false);
-	        	
 	        }
-	        
 	        ingStage.show();
 	        
 			popularRecipe=RecipeManager.popularRecipe(); 
@@ -379,17 +369,9 @@ public class HomePage {
 			}
 			
 			tableView.addEventHandler(MouseEvent.MOUSE_CLICKED, (event -> {
-	          
-	             	boolean foundR=chooseRec(tableView.getSelectionModel().getSelectedCells().get(0).getTableColumn().getCellObservableValue(tableView.getSelectionModel().getSelectedCells().get(0).getRow()).getValue().toString(),rc);
-	            	
-	            	if(foundR) { 
-	              		
-	            		gc.showRecipe();}}
-	            		
-	            	
-	            	
-	       
-			));
+	          if(chooseRec(tableView.getSelectionModel().getSelectedCells().get(0).getTableColumn().getCellObservableValue(tableView.getSelectionModel().getSelectedCells().get(0).getRow()).getValue().toString(),rc)) { 
+	              		gc.showRecipe();}}
+	           ));
 		} catch (IOException e1) {
 			logger.log(null, CONTEXT,e1);
 		}
