@@ -135,19 +135,19 @@ public class FoundRecipes {
 	
 	public ImageView inputNote(FileInputStream inpN) {
 		 Image imageN = new Image(inpN);
-	     ImageView note = new ImageView(imageN);
-	     note.setFitHeight(39);
-	     note.setFitWidth(38);
-	     note.setLayoutX(490);
-	     note.setLayoutY(3);
-	     note.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+	     ImageView noteV = new ImageView(imageN);
+	     noteV.setFitHeight(39);
+	     noteV.setFitWidth(38);
+	     noteV.setLayoutX(490);
+	     noteV.setLayoutY(3);
+	     noteV.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
 	            try {
 					createNoteFoundRecPage();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 	        });
-	     return note;
+	     return noteV;
 	}
 	public ImageView inputLogOut(FileInputStream inpL) {
 		 Image imageL = new Image(inpL);

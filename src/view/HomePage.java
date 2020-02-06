@@ -68,6 +68,10 @@ public class HomePage {
 	
 	static Logger logger = Logger.getAnonymousLogger();
 	 private static final String CONTEXT = "context";
+	 
+	 Stage ingStage = new Stage();
+	 FXMLLoader loader = new FXMLLoader (FoundRecipes.class.getResource("homePage.fxml"));
+	 AnchorPane root;
 
 	public void myProfile(){
 		GraphicController graphicController = new GraphicController();
@@ -144,9 +148,7 @@ public class HomePage {
 	}
 	
 	public void startHomePage(){
-		Stage ingStage = new Stage();
-		FXMLLoader loader = new FXMLLoader (FoundRecipes.class.getResource("homePage.fxml"));
-		AnchorPane root;
+		
 		try {
 			root = loader.load();
 			ingStage.getIcons().add(new Image("img/icon.png"));
@@ -193,11 +195,7 @@ public class HomePage {
 	        FileInputStream inputLH = new FileInputStream("src\\img\\icons8-uscita-100.png");
 	        ImageView logoutView =inputLogOutHPage(inputLH);
 	        
-	      
-	      
-	    
-	        
-	        if (lm.getUser().getUsername()=="Chef"){
+	      if (lm.getUser().getUsername()=="Chef"){
 				noteView.setVisible(false);
 				userView.setVisible(false);
 	        }
