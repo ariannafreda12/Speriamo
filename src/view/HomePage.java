@@ -149,6 +149,26 @@ public class HomePage {
 	     return logoutH;
 	}
 	
+	
+	public boolean chooseRec(String t, Recipe rc1) {
+		boolean checkRec=false;
+		
+		rc1= rm.chooseRecipe(t);
+    	if(rc1!=null) { 
+      		rb.setRecBeanTitle(rc1.getTitle());
+      		rb.setRecBeanDifficulty(rc1.getDifficulty());
+      		rb.setRecBeanCategory(rc1.getCategory());
+      		rb.setRecBeanPreparation(rc1.getPreparation());
+      		rb.setRecBeanNecessary(rc1.getNecessary());
+      		rb.setRecBeanTime(rc1.getTime());
+      		rb.setRecBeanReview(rc1.getReview());
+    		rm.setRecipe(rb);
+    		checkRec=true;
+    		}
+		
+		return checkRec;
+	}
+	
 	private Label titleLabel = new Label("Discover popular recipes:");
 	private Label recLabel = new Label();
 	private Label search= new Label();
@@ -345,7 +365,7 @@ public class HomePage {
 	        ingStage.show();
 	        
 			popularRecipe=RecipeManager.popularRecipe(); 
-		
+			list.clear();
 			if (popularRecipe!= null) {
 			//cycle for found recipes
 				
@@ -356,37 +376,20 @@ public class HomePage {
 					tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 					tableView.setItems(list);
 				}
-			}else {
-				Alert alertR = new Alert(AlertType.INFORMATION);
-				alertR.setTitle("Information");
-				alertR.setHeaderText("Information!");
-				alertR.setContentText("There are not popular recipes yet!");
-				alertR.showAndWait();
 			}
-			
 			
 			tableView.addEventHandler(MouseEvent.MOUSE_CLICKED, (event -> {
 	          
-	            try {         	
+	             	boolean foundR=chooseRec(tableView.getSelectionModel().getSelectedCells().get(0).getTableColumn().getCellObservableValue(tableView.getSelectionModel().getSelectedCells().get(0).getRow()).getValue().toString(),rc);
 	            	
-	            	rc= rm.chooseRecipe(tableView.getSelectionModel().getSelectedCells().get(0).getTableColumn().getCellObservableValue(tableView.getSelectionModel().getSelectedCells().get(0).getRow()).getValue().toString());
-	            	
-	            	if(rc!=null) { 
-	              		rb.setRecBeanTitle(rc.getTitle());
-	              		rb.setRecBeanDifficulty(rc.getDifficulty());
-	              		rb.setRecBeanCategory(rc.getCategory());
-	              		rb.setRecBeanPreparation(rc.getPreparation());
-	              		rb.setRecBeanNecessary(rc.getNecessary());
-	              		rb.setRecBeanTime(rc.getTime());
-	            		rm.setRecipe(rb);
-	            		gc.showRecipe();
+	            	if(foundR) { 
+	              		
+	            		gc.showRecipe();}}
 	            		
-	            	}
 	            	
-	            } catch (Exception e) {
-	            	logger.log(null, CONTEXT,e);
-	            }
-			}));
+	            	
+	       
+			));
 		} catch (IOException e1) {
 			logger.log(null, CONTEXT,e1);
 		}
