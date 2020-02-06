@@ -66,6 +66,7 @@ public class HomePage {
 	UserBean ub= lm.getUser();
 	
 	private static final String SYSTEM = "System";
+	Alert alert = new Alert(AlertType.WARNING);
 	
 	static Logger logger = Logger.getAnonymousLogger();
 	 private static final String CONTEXT = "context";
@@ -299,7 +300,7 @@ public class HomePage {
 					
 					logger.log(null, CONTEXT,e);
 				} catch(EmptyFieldexception e) {
-					Alert alert = new Alert(AlertType.WARNING);
+					
 					alert.setTitle("Warning");
 					alert.setHeaderText("Attention!");
 					alert.setContentText("Enter your city. Please.");
