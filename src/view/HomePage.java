@@ -79,44 +79,6 @@ public class HomePage {
 		GraphicController graphicController = new GraphicController();
 		graphicController.profilePage();
 	}
-	public boolean checkName(String usernameC,Label lblRec,Label lblTitle, Label lblCat,Label lblDiff, Label lblPrep, TextArea nec) {
-		boolean checkNm=false;
-		if (usernameC=="Chef")    {
-        	daily=RecipeManager.dailyRecipe(); 
-        	lblRec.setText("Try daily recipe:");
-        	lblTitle.setText("  " + daily.getTitle());
-        	lblCat.setText("  Category:  " + daily.getCategory());
-        	lblDiff.setText("  Difficulty:  " + daily.getDifficulty());
-        	lblPrep.setText("  Preparation time:  " + daily.getTime());
-        	nec.setText(daily.getNecessary());
-        	
-        	
-        } else if ((fav=UserProfileManager.favRecipe(lm.getUser().getUsername()))!=null) {
-        	
-        	lblRec.setText("One of your favourite recipe:");
-        	lblTitle.setText("  " + fav.getTitle());
-        	lblCat.setText("  Category:  " + fav.getCategory());
-        	lblDiff.setText("  Difficulty:  " + fav.getDifficulty());
-        	lblPrep.setText("  Preparation time:  " + fav.getTime());
-        	nec.setText(fav.getNecessary());
-        	
-        	checkNm=true;
-        	
-        }
-        else{
-        	lblRec.setText("You haven't a favourite recipe yet");
-        	lblTitle.setVisible(false);
-        	lblCat.setVisible(false);
-        	lblDiff.setVisible(false);
-        	lblPrep.setVisible(false);
-        	nec.setVisible(false);
-        	
-        	
-        }
-		return checkNm;
-	
-		
-	}
 	
 	public void logOut(MouseEvent me){
 		LoginManager controller = new LoginManager();
@@ -349,17 +311,36 @@ public class HomePage {
 	        });      
 	    
 	        root.getChildren().addAll(scroll,scroll2,search, tf, se);
-	        boolean checkNom= checkName(lm.getUser().getUsername(),recLabel,title, cat,diff, prep, necLabel);
-	        if(checkNom==false) {
-	        	prep.setText(daily.getPreparation());
-	        }
-	        else if(checkNom==true) {
-	        	prep.setText(fav.getPreparation());
-	        }
-	        else {
+	             
+	         if (lm.getUser().getUsername()=="Chef")    {
+	        	daily=RecipeManager.dailyRecipe(); 
+	        	recLabel.setText("Try daily recipe:");
+	        	title.setText("  " + daily.getTitle());
+	        	cat.setText("  Category:  " + daily.getCategory());
+	        	diff.setText("  Difficulty:  " + daily.getDifficulty());
+	        	prep.setText("  Preparation time:  " + daily.getTime());
+	        	necLabel.setText(daily.getNecessary());
+	        	prepLabel.setText(daily.getPreparation());
+	        } else if ((fav=UserProfileManager.favRecipe(lm.getUser().getUsername()))!=null) {
+	        	
+	        	recLabel.setText("One of your favourite recipe:");
+	        	title.setText("  " + fav.getTitle());
+	        	cat.setText("  Category:  " + fav.getCategory());
+	        	diff.setText("  Difficulty:  " + fav.getDifficulty());
+	        	prep.setText("  Preparation time:  " + fav.getTime());
+	        	necLabel.setText(fav.getNecessary());
+	        	prepLabel.setText(fav.getPreparation());
+	        	
+	        }else{
+	        	recLabel.setText("You haven't a favourite recipe yet");
+	        	title.setVisible(false);
+	        	cat.setVisible(false);
+	        	diff.setVisible(false);
 	        	prep.setVisible(false);
+	        	necLabel.setVisible(false);
+	        	prepLabel.setVisible(false);
+	        	
 	        }
-	        
 	        
 	        ingStage.show();
 	        
