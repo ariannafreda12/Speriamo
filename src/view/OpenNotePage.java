@@ -39,7 +39,7 @@ public class OpenNotePage {
 	private Button deleteNotebtn = new Button();
 	private Label writeNoteLabel = new Label();
 	
-	GraphicController graphicController = new GraphicController();
+	
 	
 	LoginManager lm = LoginManager.getInstance();
 	UserBean u = lm.getUser();
@@ -48,6 +48,13 @@ public class OpenNotePage {
 	NotesBean nb=nm.getNote();
 	
 	private static final String SYSTEM = "System";
+	
+	public void openProfilePage(ActionEvent event)  {
+		GraphicController graphicController = new GraphicController();
+		((Node)(event.getSource())).getScene().getWindow().hide();
+		graphicController.profilePage();
+    
+	}
 	
 	public boolean modNote(String noteI, String noteMod) {
 		boolean checkM=false;
@@ -149,19 +156,10 @@ public class OpenNotePage {
  				boolean checkMod=false;
  				checkMod=modNote(nb.getNote(),txtNote.getText());
  				if (checkMod) {
- 						((Node)(event.getSource())).getScene().getWindow().hide();
- 						
- 				        try {
-							graphicController.profilePage();
-						} catch (Exception e) {
-							
-							e.printStackTrace();
-						}
- 						
- 				}
+ 						openProfilePage(event);
+ 				        }
  				else {
- 					
-						((Node)(event.getSource())).getScene().getWindow().hide();
+ 					((Node)(event.getSource())).getScene().getWindow().hide();
 						}
  			}
  		});
@@ -174,17 +172,9 @@ public class OpenNotePage {
  				if(risposta.isPresent() && risposta.get() == ButtonType.OK) {
  					boolean checkDel=false;
  					checkDel= delNote(nb.getNote(),nb.getUsername());
- 					((Node)(event.getSource())).getScene().getWindow().hide();
+ 					
  					if (checkDel) {
- 	 					
- 	 					try {
- 								graphicController.profilePage();
- 								
- 							} catch (Exception e) {
- 								
- 								e.printStackTrace();
- 							}
- 	 						
+ 						openProfilePage(event);
  	 						
  	 				}
  					else {
