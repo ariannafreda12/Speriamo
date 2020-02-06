@@ -74,6 +74,22 @@ public class HomePage {
 	 Stage ingStage = new Stage();
 	 FXMLLoader loader = new FXMLLoader (FoundRecipes.class.getResource("homePage.fxml"));
 	 AnchorPane root;
+	 
+	 private Label titleLabel = new Label("Discover popular recipes:");
+		private Label recLabel = new Label();
+		private Label search= new Label();
+		private final Label hi= new Label();
+		private TableView<Recipe> tableView = new TableView<>();
+		private Label title= new Label();
+	    private Label cat= new Label();
+	    private Label diff= new Label();
+	    private Label prep= new Label();
+	    private TextArea prepLabel = new TextArea();
+	    private TextArea tf = new TextArea();                     
+	    private Button se= new Button();
+	    private TextArea necLabel = new TextArea();
+	    private TableColumn<Recipe,String> column1 = new TableColumn<>("Title");
+	    private TableColumn<Recipe,String> column2= new TableColumn<> ("Like");
 
 	public void myProfile(){
 		GraphicController graphicController = new GraphicController();
@@ -168,22 +184,38 @@ public class HomePage {
 		
 		return checkRec;
 	}
+	public void searchOn(Button s) {
+		  s.setText("Find it!");
+	      s.setFont(Font.font(SYSTEM, FontWeight.BOLD, FontPosture.ITALIC, 16));
+	      s.setPrefSize(100,10);
+	        s.setLayoutX(170);
+	        s.setLayoutY(445);
+	               
+	        s.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {  
+				try {
+					if(!tf.getText().isEmpty()) {				
+		 		    Desktop.getDesktop().browse(new URI("https://www.google.com/search?q=" + URLEncoder.encode("cooking course in ", "UTF-8") + URLEncoder.encode(tf.getText(), "UTF-8")));
+		 		    }
+					else {
+						throw new EmptyFieldexception();
+					
+					}
+				} catch (URISyntaxException|IOException e) {
+					
+					logger.log(null, CONTEXT,e);
+				} catch(EmptyFieldexception e) {
+					
+					alert.setTitle("Warning");
+					alert.setHeaderText("Attention!");
+					alert.setContentText("Enter your city. Please.");
+					alert.showAndWait();
+					
+				}
+	 				
+	        });      
+		
+	}
 	
-	private Label titleLabel = new Label("Discover popular recipes:");
-	private Label recLabel = new Label();
-	private Label search= new Label();
-	private final Label hi= new Label();
-	private TableView<Recipe> tableView = new TableView<>();
-	private Label title= new Label();
-    private Label cat= new Label();
-    private Label diff= new Label();
-    private Label prep= new Label();
-    private TextArea prepLabel = new TextArea();
-    private TextArea tf = new TextArea();                     
-    private Button se= new Button();
-    private TextArea necLabel = new TextArea();
-    private TableColumn<Recipe,String> column1 = new TableColumn<>("Title");
-    private TableColumn<Recipe,String> column2= new TableColumn<> ("Like");
 	
 	public void startHomePage(){
 		
@@ -301,34 +333,7 @@ public class HomePage {
 	        tf.setLayoutX(75);
 	        tf.setLayoutY(380);
 	      
-	        se.setText("Find it!");
-	        se.setFont(Font.font(SYSTEM, FontWeight.BOLD, FontPosture.ITALIC, 16));
-	        se.setPrefSize(100,10);
-	        se.setLayoutX(170);
-	        se.setLayoutY(445);
-	               
-	        se.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {  
-				try {
-					if(!tf.getText().isEmpty()) {				
-		 		    Desktop.getDesktop().browse(new URI("https://www.google.com/search?q=" + URLEncoder.encode("cooking course in ", "UTF-8") + URLEncoder.encode(tf.getText(), "UTF-8")));
-		 		    }
-					else {
-						throw new EmptyFieldexception();
-					
-					}
-				} catch (URISyntaxException|IOException e) {
-					
-					logger.log(null, CONTEXT,e);
-				} catch(EmptyFieldexception e) {
-					
-					alert.setTitle("Warning");
-					alert.setHeaderText("Attention!");
-					alert.setContentText("Enter your city. Please.");
-					alert.showAndWait();
-					
-				}
-	 				
-	        });      
+	      
 	    
 	        root.getChildren().addAll(scroll,scroll2,search, tf, se);
 	             
@@ -352,6 +357,7 @@ public class HomePage {
 	        	prepLabel.setText(fav.getPreparation());
 	        	
 	        }
+	         searchOn(se);
 	        ingStage.show();
 	        
 			popularRecipe=RecipeManager.popularRecipe(); 
