@@ -15,6 +15,7 @@ import controller.GraphicController;
 import controller.LoginManager;
 import controller.RecipeManager;
 import controller.UserProfileManager;
+import exception.EmptyFieldexception;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -147,6 +148,20 @@ public class HomePage {
 	     return logoutH;
 	}
 	
+	private Label titleLabel = new Label("Discover popular recipes:");
+	private Label recLabel = new Label();
+	private Label search= new Label();
+	private final Label hi= new Label();
+	private TableView<Recipe> tableView = new TableView<>();
+	private Label title= new Label();
+    private Label cat= new Label();
+    private Label diff= new Label();
+    private Label prep= new Label();
+    private TextArea prepLabel = new TextArea();
+    private TextArea tf = new TextArea();                     
+    private Button se= new Button();
+    private TextArea necLabel = new TextArea();
+	
 	public void startHomePage(){
 		
 		try {
@@ -157,28 +172,28 @@ public class HomePage {
 	        Scene scene = new Scene(root, 800, 600);
 	        ingStage.setScene(scene);
 	        
-	        Label titleLabel = new Label("Discover popular recipes:");
+	       
 	        titleLabel.setAlignment(Pos.TOP_LEFT);
 	        titleLabel.setFont(Font.font(SYSTEM,FontWeight.BOLD, FontPosture.ITALIC, 20));
 	        titleLabel.setTextFill(Color.FIREBRICK);
 	        titleLabel.setLayoutX(79);
 	        titleLabel.setLayoutY(129);
 	        
-	        Label recLabel = new Label();
+	        
 	        recLabel.setAlignment(Pos.TOP_LEFT);
 	        recLabel.setFont(Font.font(SYSTEM,FontWeight.BOLD, FontPosture.ITALIC, 20));
 	        recLabel.setTextFill(Color.FIREBRICK);
 	        recLabel.setLayoutX(405);
 	        recLabel.setLayoutY(129);
 	        
-	        Label search= new Label();
+	        
 	        search.setFont(Font.font(SYSTEM, FontWeight.BOLD, FontPosture.ITALIC, 18));
 	        search.setText(" Search a cooking class near you");
 	        search.setTextFill(Color.FIREBRICK);
 	        search.setLayoutX(80);
 	        search.setLayoutY(350);
 	        
-	        final Label hi= new Label();
+	        
 	        hi.setText("Hi " + ub.getUsername());
 	        hi.setLayoutY(10);
 	        hi.setLayoutX(600);
@@ -202,7 +217,7 @@ public class HomePage {
 	        
 	        root.getChildren().addAll(hi, noteView, userView, logoutView, titleLabel, recLabel);
 	        
-	        TableView<Recipe> tableView = new TableView<>();
+	       
 	        tableView.setPrefWidth(300);
 	        
 	        TableColumn<Recipe,String> column1 = new TableColumn<>("Title");
@@ -224,25 +239,21 @@ public class HomePage {
 	               
 	        VBox vb = new VBox();
 	        
-	        Label title= new Label();
-	        title.setFont(Font.font(SYSTEM, FontWeight.BOLD, FontPosture.ITALIC, 18));
 	        
-	        Label cat= new Label();
+	        title.setFont(Font.font(SYSTEM, FontWeight.BOLD, FontPosture.ITALIC, 18));
+	       
 	        cat.setFont(Font.font(SYSTEM, FontPosture.ITALIC, 16));
 	        
-	        Label diff= new Label();
 	        diff.setFont(Font.font(SYSTEM, FontPosture.ITALIC, 16));
 	        
-	        Label prep= new Label();
 	        prep.setFont(Font.font(SYSTEM, FontPosture.ITALIC, 16));
-	        
-	        TextArea necLabel = new TextArea();
+	       
+	       
 	        necLabel.setWrapText(true);
 	        necLabel.setFont(Font.font(SYSTEM, FontPosture.ITALIC, 14));
 	        necLabel.setPrefSize(330, 80);
 	        necLabel.setEditable(false);
 	        
-	        TextArea prepLabel = new TextArea();
 	        prepLabel.setPrefSize(330, 150);
 	        prepLabel.setWrapText(true);
 	        prepLabel.setFont(Font.font(SYSTEM, FontPosture.ITALIC, 14));
@@ -260,8 +271,7 @@ public class HomePage {
 	        scroll2.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 	        
 	     
-	        
-	        TextArea tf = new TextArea();
+	       
 	        tf.setWrapText(true);
 	        tf.setFont(Font.font(SYSTEM, FontPosture.ITALIC, 18));
 	        tf.setPrefSize(290, 10);
@@ -269,8 +279,7 @@ public class HomePage {
 	        tf.setPromptText("Insert your city");
 	        tf.setLayoutX(75);
 	        tf.setLayoutY(380);
-	                              
-	        Button se= new Button();
+	      
 	        se.setText("Find it!");
 	        se.setFont(Font.font(SYSTEM, FontWeight.BOLD, FontPosture.ITALIC, 16));
 	        se.setPrefSize(100,10);
@@ -283,16 +292,20 @@ public class HomePage {
 		 		    Desktop.getDesktop().browse(new URI("https://www.google.com/search?q=" + URLEncoder.encode("cooking course in ", "UTF-8") + URLEncoder.encode(tf.getText(), "UTF-8")));
 		 		    }
 					else {
-						Alert alert = new Alert(AlertType.WARNING);
-						alert.setTitle("Warning");
-						alert.setHeaderText("Attention!");
-						alert.setContentText("Enter your city. Please.");
-						alert.showAndWait();
+						throw new EmptyFieldexception();
+					
 					}
 				} catch (URISyntaxException|IOException e) {
 					
 					logger.log(null, CONTEXT,e);
-				}  
+				} catch(EmptyFieldexception e) {
+					Alert alert = new Alert(AlertType.WARNING);
+					alert.setTitle("Warning");
+					alert.setHeaderText("Attention!");
+					alert.setContentText("Enter your city. Please.");
+					alert.showAndWait();
+					
+				}
 	 				
 	        });      
 	    

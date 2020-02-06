@@ -46,8 +46,8 @@ public class RecipePage{
 	
 	UserProfileManager upm= UserProfileManager.getInstance();
 	
-	public Label reviewLabel = new Label();
-	public Button likebtn = new Button();	
+	private Label reviewLabel = new Label();
+	private Button likebtn = new Button();	
 	
 	static Logger logger = Logger.getAnonymousLogger();
 	private static final String CONTEXT = "context";

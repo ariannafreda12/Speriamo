@@ -155,7 +155,7 @@ public class Registration {
         try {
 			graphicController.start(null);
 		} catch (Exception e) {
-			logger.log(null, "context",e);
+			logger.log(null, CONTEXT,e);
 		}	
 	}
 	
@@ -172,7 +172,7 @@ public class Registration {
 	        regStage.setScene(scene);
 	        regStage.show();
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.log(null, CONTEXT,e);
 		}
 	
 	}
