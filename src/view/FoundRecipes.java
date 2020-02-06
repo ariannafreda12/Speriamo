@@ -25,7 +25,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -67,6 +66,10 @@ public class FoundRecipes {
 	LoginManager lm =LoginManager.getInstance();
 	UserBean ub= lm.getUser();
 	
+	Stage ingStageFoundRecPage = new Stage();
+	FXMLLoader loader = new FXMLLoader (FoundRecipes.class.getResource("found_recipes.fxml"));
+	AnchorPane root;
+	
 	public Set<Recipe> check(Set<Recipe> first) {
 		Set<String> unique =  new HashSet<>();
 		List<String> dupes = new ArrayList<>();
@@ -95,7 +98,7 @@ public class FoundRecipes {
         graphicController.registrationPage();
 	}
 	
-	public void logOut(MouseEvent me){
+	public void logOutFoundPage(MouseEvent me){
 		LoginManager controller = new LoginManager();
         controller.resetUser();
         ((Node)(me.getSource())).getScene().getWindow().hide();
@@ -112,11 +115,59 @@ public class FoundRecipes {
     	GraphicController graphicController = new GraphicController();
         graphicController.notePage();
 	}
+	public ImageView inputProfile(FileInputStream in) {
+		 Image imageP = new Image(in);
+	     ImageView user = new ImageView(imageP);
+	     user.setFitHeight(30);
+	     user.setFitWidth(34);
+	     user.setLayoutX(712);
+	     user.setLayoutY(7);
+	     user.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+	            try {
+					myProfile();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+	        });
+	     return user;
+		
+	}
+	
+	public ImageView inputNote(FileInputStream inpN) {
+		 Image imageN = new Image(inpN);
+	     ImageView note = new ImageView(imageN);
+	     note.setFitHeight(39);
+	     note.setFitWidth(38);
+	     note.setLayoutX(490);
+	     note.setLayoutY(3);
+	     note.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+	            try {
+					createNoteFoundRecPage();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+	        });
+	     return note;
+	}
+	public ImageView inputLogOut(FileInputStream inpL) {
+		 Image imageL = new Image(inpL);
+	     ImageView logout = new ImageView(imageL);
+	     logout.setFitHeight(30);
+	     logout.setFitWidth(28);
+	     logout.setLayoutX(758);
+	     logout.setLayoutY(7);
+	     logout.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+	            try {
+	            	logOutFoundPage(event);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+	        });
+	     return logout;
+	}
 	
 	public void startFoundRec(){
-		Stage ingStageFoundRecPage = new Stage();
-		FXMLLoader loader = new FXMLLoader (FoundRecipes.class.getResource("found_recipes.fxml"));
-		AnchorPane root;
+		
 		try {
 			root = loader.load();
 			ingStageFoundRecPage.getIcons().add(new Image("img/icon.png"));
@@ -132,49 +183,15 @@ public class FoundRecipes {
 	        hi.setFont(Font.font("System", FontPosture.ITALIC, 18));
 	        
 	        FileInputStream inputP = new FileInputStream("src\\img\\icons8-nome-100.png");
-	        Image imageP = new Image(inputP);
-	        ImageView userViewFoundRecPage = new ImageView(imageP);
-	        userViewFoundRecPage.setFitHeight(30);
-	        userViewFoundRecPage.setFitWidth(34);
-	        userViewFoundRecPage.setLayoutX(712);
-	        userViewFoundRecPage.setLayoutY(7);
-	        userViewFoundRecPage.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-	            try {
-					myProfile();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-	        });
-	        
+	        ImageView userViewFoundRecPage = inputProfile(inputP);
+	       
 	        FileInputStream inputN = new FileInputStream("src\\img\\icons8-libretto-a-spirale-legato-80.png");
-	        Image imageN = new Image(inputN);
-	        ImageView noteViewFoundRecPage = new ImageView(imageN);
-	        noteViewFoundRecPage.setFitHeight(39);
-	        noteViewFoundRecPage.setFitWidth(38);
-	        noteViewFoundRecPage.setLayoutX(490);
-	        noteViewFoundRecPage.setLayoutY(3);
-	        noteViewFoundRecPage.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-	            try {
-					createNoteFoundRecPage();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-	        });
+	        ImageView noteViewFoundRecPage = inputNote(inputN);
+	       
 	        
 	        FileInputStream inputL = new FileInputStream("src\\img\\icons8-uscita-100.png");
-	        Image imageL = new Image(inputL);
-	        ImageView logoutViewFoundRecPage = new ImageView(imageL);
-	        logoutViewFoundRecPage.setFitHeight(30);
-	        logoutViewFoundRecPage.setFitWidth(28);
-	        logoutViewFoundRecPage.setLayoutX(758);
-	        logoutViewFoundRecPage.setLayoutY(7);
-	        logoutViewFoundRecPage.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-	            try {
-					logOut(event);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-	        });
+	        ImageView logoutViewFoundRecPage =inputLogOut(inputL);
+	     
 	        
 	        if (lm.getUser().getUsername()=="Chef"){
 				noteViewFoundRecPage.setVisible(false);
