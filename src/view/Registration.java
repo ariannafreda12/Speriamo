@@ -48,6 +48,35 @@ public class Registration {
 	
 	UserBean ub = new UserBean();
 	
+	public boolean checkMail(String mail) {
+		 boolean result = true;
+	        // Create the Pattern using the regex
+	           Pattern p = Pattern.compile(".+@.+\\.[a-z]+");
+	    
+	           // Match the given string with the pattern
+	           Matcher m = p.matcher(mail);
+	    
+	           // check whether match is found
+	           boolean matchFound = m.matches();
+	    
+	           StringTokenizer st = new StringTokenizer(mail, ".");
+	           String lastToken = null;
+	           while (st.hasMoreTokens()) {
+	               lastToken = st.nextToken();
+	           }
+	    
+	           // validate the country code
+	           if (matchFound && lastToken.length() >= 2
+	                   && mail.length() - 1 != lastToken.length()) {
+	    
+	              result = true;
+	           } else {
+	               result = false;
+	           }
+	           return result;
+		
+	}
+	
 	
 	//Method to create a new account
 	public void registration(ActionEvent actionEvent){
@@ -57,30 +86,8 @@ public class Registration {
         String email = emailField.getText();
 
 
-        boolean result = true;
-        // Create the Pattern using the regex
-           Pattern p = Pattern.compile(".+@.+\\.[a-z]+");
-    
-           // Match the given string with the pattern
-           Matcher m = p.matcher(email);
-    
-           // check whether match is found
-           boolean matchFound = m.matches();
-    
-           StringTokenizer st = new StringTokenizer(email, ".");
-           String lastToken = null;
-           while (st.hasMoreTokens()) {
-               lastToken = st.nextToken();
-           }
-    
-           // validate the country code
-           if (matchFound && lastToken.length() >= 2
-                   && email.length() - 1 != lastToken.length()) {
-    
-              result = true;
-           } else {
-               result = false;
-           }
+        boolean resultM = checkMail(email);
+       
         
         if (username.equals("") ||password.equals("") || email.equals("")){
         	Alert alert = new Alert(AlertType.WARNING);
@@ -91,7 +98,7 @@ public class Registration {
         }
         
         if (username.length()>=6 && password.length()>=6){
-        	if(result) {
+        	if(resultM) {
 			 if (LoginManager.register(username, password, email)){
 	              
 	                ((Node)(actionEvent.getSource())).getScene().getWindow().hide();

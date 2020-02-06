@@ -73,6 +73,30 @@ public class OpenNotePage {
 		return checkM;
 		
 	}
+	public boolean delNote(String noteD, String usernameD) {
+		boolean checkD=false;
+		if ((nm.deleteNotes(noteD, usernameD))){
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+				alert.setTitle("Success");
+				alert.setHeaderText("Success!");
+				alert.setContentText("Note deleted");
+				alert.showAndWait();
+				checkD=true;
+				
+		}
+		else {
+			Alert alertD = new Alert(AlertType.INFORMATION);
+				alertD.setTitle("Information");
+				alertD.setHeaderText("Information!");
+				alertD.setContentText("Note not deleted succesfully");
+				alertD.showAndWait();
+				
+			
+		}
+		
+		return checkD;
+		
+	}
 	
 	public void startOpNotePage (){
 		
@@ -134,13 +158,11 @@ public class OpenNotePage {
 							e.printStackTrace();
 						}
  						
- 						
  				}
  				else {
  					
 						((Node)(event.getSource())).getScene().getWindow().hide();
- 					
- 				}
+						}
  			}
  		});
        
@@ -150,16 +172,14 @@ public class OpenNotePage {
  				Optional<ButtonType> risposta = dialogoAllerta.showAndWait();
  				
  				if(risposta.isPresent() && risposta.get() == ButtonType.OK) {
+ 					boolean checkDel=false;
+ 					checkDel= delNote(nb.getNote(),nb.getUsername());
  					((Node)(event.getSource())).getScene().getWindow().hide();
- 					if ((nm.deleteNotes(nb.getNote(), nb.getUsername()))) {
+ 					if (checkDel) {
  	 					
  	 					try {
  								graphicController.profilePage();
- 								Alert alert = new Alert(AlertType.CONFIRMATION);
- 	 	 						alert.setTitle("Success");
- 	 	 						alert.setHeaderText("Success!");
- 	 	 						alert.setContentText("Note deleted");
- 	 	 						alert.showAndWait();
+ 								
  							} catch (Exception e) {
  								
  								e.printStackTrace();
@@ -168,11 +188,7 @@ public class OpenNotePage {
  	 						
  	 				}
  					else {
- 	 					Alert alert = new Alert(AlertType.INFORMATION);
- 							alert.setTitle("Information");
- 							alert.setHeaderText("Information!");
- 							alert.setContentText("Note not deleted succesfully");
- 							alert.showAndWait();
+ 	 					
  							((Node)(event.getSource())).getScene().getWindow().hide();
  							}
  					}
