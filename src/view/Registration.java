@@ -36,7 +36,7 @@ public class Registration {
 	@FXML
 	public Text goToLogin1;
 	
-	static Logger logger = Logger.getAnonymousLogger();
+	
 	
 	private static final String WARNING = "Warning";
 	private static final String ATTENTION = "Attention!";
@@ -44,9 +44,24 @@ public class Registration {
 	
 	LoginManager lm= LoginManager.getInstance();
 	
-	  GraphicController graphicController = new GraphicController();
+	static Logger logger = Logger.getAnonymousLogger();
+	 private static final String CONTEXT = "context";
 	
 	UserBean ub = new UserBean();
+	
+	GraphicController graphicController = new GraphicController();
+	
+	public void closeRegPage(ActionEvent actionEvent)  {
+		
+        ((Node)(actionEvent.getSource())).getScene().getWindow().hide();
+		try {
+			graphicController.start(null);
+		} catch (Exception e) {
+		
+			logger.log(null, CONTEXT,e);
+		}
+	    
+		}
 	
 	public boolean checkMail(String mail) {
 		 boolean result = true;
@@ -101,12 +116,7 @@ public class Registration {
         	if(resultM) {
 			 if (LoginManager.register(username, password, email)){
 	              
-	                ((Node)(actionEvent.getSource())).getScene().getWindow().hide();
-	                try {
-						graphicController.start(null);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
+				 	closeRegPage(actionEvent);
 	                //go to main  page to do login
 	                Alert alertRegistration = new Alert(AlertType.CONFIRMATION);
 	    			alertRegistration.setTitle("Success");

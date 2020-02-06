@@ -54,6 +54,10 @@ public class RecipePage{
 	
 	private static final String SYSTEM = "System";
 	
+	Stage ingStage = new Stage();
+	FXMLLoader loader = new FXMLLoader (RecipePage.class.getResource("recipePage.fxml"));
+	AnchorPane root;
+	
 	public void myProfile(){
     	GraphicController graphicController = new GraphicController();
         graphicController.profilePage();
@@ -88,21 +92,72 @@ public class RecipePage{
 		if ((rm.reviewRecipe(title, rev))) {
 			check=rm.addReviewRecipe(username, title);
 			 if(check) {
+				 Alert alert = new Alert(AlertType.CONFIRMATION);
+				 alert.setTitle("Success");
+				 alert.setHeaderText("Success!");
+				 alert.setContentText("Thanks for your opinion");
+				 alert.showAndWait();
 				 check=true;
 			 }
 		
 	}
-		return check;
-		
-
-         
+		return check; 
 }
+	
+	public ImageView inputProfileR(FileInputStream inR) {
+		 Image imageP = new Image(inR);
+	     ImageView userR = new ImageView(imageP);
+	     userR.setFitHeight(30);
+	     userR.setFitWidth(34);
+	     userR.setLayoutX(712);
+	     userR.setLayoutY(7);
+	     userR.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+	            try {
+					myProfile();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+	        });
+	     return userR;
+		
+	}
+	
+	public ImageView inputNoteR(FileInputStream inpNR) {
+		 Image imageN = new Image(inpNR);
+	     ImageView noteVR = new ImageView(imageN);
+	     noteVR.setFitHeight(39);
+	     noteVR.setFitWidth(38);
+	     noteVR.setLayoutX(490);
+	     noteVR.setLayoutY(3);
+	     noteVR.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+	            try {
+					createNoteRecipePage();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+	        });
+	     return noteVR;
+	}
+	public ImageView inputLogOutR(FileInputStream inpLR) {
+		 Image imageL = new Image(inpLR);
+	     ImageView logoutR = new ImageView(imageL);
+	     logoutR.setFitHeight(30);
+	     logoutR.setFitWidth(28);
+	     logoutR.setLayoutX(758);
+	     logoutR.setLayoutY(7);
+	     logoutR.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+	            try {
+	            	logOutRecipePagde(event);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+	        });
+	     return logoutR;
+	}
 
 	public void startRecPage() {
 			
-		Stage ingStage = new Stage();
-		FXMLLoader loader = new FXMLLoader (RecipePage.class.getResource("recipePage.fxml"));
-		AnchorPane root;
+	
 		try {
 			root = loader.load();
 			ingStage.getIcons().add(new Image("img/icon.png"));
@@ -117,54 +172,15 @@ public class RecipePage{
 	        hi.setFont(Font.font(SYSTEM, FontPosture.ITALIC, 18));
 	        
 	        FileInputStream inputP = new FileInputStream("src\\img\\icons8-nome-100.png");
-	        Image imageP = new Image(inputP);
-	        ImageView userViewRecipePage = new ImageView(imageP);
-	        userViewRecipePage.setLayoutX(1);
-	        userViewRecipePage.setLayoutY(2);
-	        userViewRecipePage.setFitHeight(30);
-	        userViewRecipePage.setFitWidth(34);
-	        userViewRecipePage.setLayoutX(712);
-	        userViewRecipePage.setLayoutY(7);
-	        userViewRecipePage.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-	            try {
-					myProfile();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-	        });
-	        
+	        ImageView userViewRecipePage = inputProfileR(inputP);
+	       
 	        FileInputStream inputN = new FileInputStream("src\\img\\icons8-libretto-a-spirale-legato-80.png");
-	        Image imageN = new Image(inputN);
-	        ImageView noteViewRecipePage = new ImageView(imageN);
-	        noteViewRecipePage.setLayoutX(1);
-	        noteViewRecipePage.setLayoutY(2);
-	        noteViewRecipePage.setFitHeight(39);
-	        noteViewRecipePage.setFitWidth(38);
-	        noteViewRecipePage.setLayoutX(490);
-	        noteViewRecipePage.setLayoutY(3);
-	        noteViewRecipePage.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-	            try {
-					createNoteRecipePage();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-	        });
-	                
-	        FileInputStream inputL = new FileInputStream("src\\img\\icons8-uscita-100.png");
-	        Image imageL = new Image(inputL);
-	        ImageView logoutViewRecipePage = new ImageView(imageL);
-	        logoutViewRecipePage.setFitHeight(30);
-	        logoutViewRecipePage.setFitWidth(28);
-	        logoutViewRecipePage.setLayoutX(758);
-	        logoutViewRecipePage.setLayoutY(7);
-	        logoutViewRecipePage.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-	            try {
-					logOutRecipePagde(event);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-	        });
+	        ImageView noteViewRecipePage = inputNoteR(inputN);
+	       
 	        
+	        FileInputStream inputL = new FileInputStream("src\\img\\icons8-uscita-100.png");
+	        ImageView logoutViewRecipePage =inputLogOutR(inputL);
+	                
 	        if (lm.getUser().getUsername()=="Chef"){
 				noteViewRecipePage.setVisible(false);
 				userViewRecipePage.setVisible(false);
@@ -249,11 +265,6 @@ public class RecipePage{
 					
 						boolean checkRev=reviewStudy(rb.getRecBeanTitle(),ub.getUsername(),rb.getRecBeanReview());
 						 if(checkRev) {
-							 Alert alert = new Alert(AlertType.CONFIRMATION);
-							 alert.setTitle("Success");
-							 alert.setHeaderText("Success!");
-							 alert.setContentText("Thanks for your opinion");
-							 alert.showAndWait();
 							 likebtn.setVisible(false);
 							 reviewLabel.setText("You like it!");
 							 
@@ -306,7 +317,7 @@ public class RecipePage{
 			GraphicController graphicController = new GraphicController();
             graphicController.registrationPage();
 		}
-		else if((name!="Chef" && upm.saveRecipe(rb.getRecBeanTitle(), rb.getRecBeanPreparation(), rb.getRecBeanDifficulty(), rb.getRecBeanCategory(), rb.getrecBeanTime(), rb.getRecBeanNecessary(), ub.getUsername()))==true) {
+		else if((name!="Chef" && upm.saveRecipe(rb.getRecBeanTitle(), rb.getRecBeanPreparation(), rb.getRecBeanDifficulty(), rb.getRecBeanCategory(), rb.getrecBeanTime(), rb.getRecBeanNecessary(), ub.getUsername()))) {
 		
 			Alert alert = new Alert(AlertType.CONFIRMATION);
 			alert.setTitle("Success");
