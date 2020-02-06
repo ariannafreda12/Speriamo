@@ -36,6 +36,18 @@ public class ChangePasswordPage {
 	
 	static Logger logger = Logger.getAnonymousLogger();
 	 private static final String CONTEXT = "context";
+	 
+	public void closeCPassPage(ActionEvent actionEvent)  {
+		GraphicController graphicController = new GraphicController();
+        ((Node)(actionEvent.getSource())).getScene().getWindow().hide();
+		try {
+			graphicController.start(null);
+		} catch (Exception e) {
+		
+			logger.log(null, CONTEXT,e);
+		}
+	    
+		}
 	
 	public void changePassword(ActionEvent actionEvent) {
 		
@@ -77,17 +89,7 @@ public class ChangePasswordPage {
           			alert.setHeaderText("Success!");
           			alert.setContentText("Password changed successfully");
           			alert.showAndWait();
-               
-            	GraphicController graphicController = new GraphicController();
-                ((Node)(actionEvent.getSource())).getScene().getWindow().hide();
-                try {
-					graphicController.start(null);
-				} catch (Exception e) {
-					
-					logger.log(null, CONTEXT,e);
-				}
-               
-       			}
+          			closeCPassPage(actionEvent);
             }
             else {
             	Alert alert = new Alert(AlertType.ERROR);
@@ -96,9 +98,12 @@ public class ChangePasswordPage {
     			alert.setContentText("Incorrect username");
     			alert.showAndWait();
             	
+
             }
+            }
+		}
         	
-        }
+        
 		catch (EmptyFieldexception e) {
             Alert alert = new Alert( Alert.AlertType.WARNING );
             alert.setTitle( "" );
