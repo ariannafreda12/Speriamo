@@ -79,6 +79,43 @@ public class HomePage {
 		GraphicController graphicController = new GraphicController();
 		graphicController.profilePage();
 	}
+	public void checkName(String usernameC,Label lblRec,Label lblTitle, Label lblCat,Label lblDiff, Label lblPrep, TextArea nec, TextArea prep) {
+		boolean checkNm=false;
+		if (usernameC=="Chef")    {
+        	daily=RecipeManager.dailyRecipe(); 
+        	lblRec.setText("Try daily recipe:");
+        	lblTitle.setText("  " + daily.getTitle());
+        	lblCat.setText("  Category:  " + daily.getCategory());
+        	lblDiff.setText("  Difficulty:  " + daily.getDifficulty());
+        	lblPrep.setText("  Preparation time:  " + daily.getTime());
+        	nec.setText(daily.getNecessary());
+        	prep.setText(daily.getPreparation());
+        	
+        } else if ((fav=UserProfileManager.favRecipe(lm.getUser().getUsername()))!=null) {
+        	
+        	lblRec.setText("One of your favourite recipe:");
+        	lblTitle.setText("  " + fav.getTitle());
+        	lblCat.setText("  Category:  " + fav.getCategory());
+        	lblDiff.setText("  Difficulty:  " + fav.getDifficulty());
+        	lblPrep.setText("  Preparation time:  " + fav.getTime());
+        	nec.setText(fav.getNecessary());
+        	prep.setText(fav.getPreparation());
+        	checkNm=true;
+        	
+        }
+        else{
+        	lblRec.setText("You haven't a favourite recipe yet");
+        	lblTitle.setVisible(false);
+        	lblCat.setVisible(false);
+        	lblDiff.setVisible(false);
+        	lblPrep.setVisible(false);
+        	nec.setVisible(false);
+        	prep.setVisible(false);
+        	
+        }
+	
+		
+	}
 	
 	public void logOut(MouseEvent me){
 		LoginManager controller = new LoginManager();
@@ -311,36 +348,8 @@ public class HomePage {
 	        });      
 	    
 	        root.getChildren().addAll(scroll,scroll2,search, tf, se);
-	             
-	         if (lm.getUser().getUsername()=="Chef")    {
-	        	daily=RecipeManager.dailyRecipe(); 
-	        	recLabel.setText("Try daily recipe:");
-	        	title.setText("  " + daily.getTitle());
-	        	cat.setText("  Category:  " + daily.getCategory());
-	        	diff.setText("  Difficulty:  " + daily.getDifficulty());
-	        	prep.setText("  Preparation time:  " + daily.getTime());
-	        	necLabel.setText(daily.getNecessary());
-	        	prepLabel.setText(daily.getPreparation());
-	        } else if ((fav=UserProfileManager.favRecipe(lm.getUser().getUsername()))!=null) {
-	        	
-	        	recLabel.setText("One of your favourite recipe:");
-	        	title.setText("  " + fav.getTitle());
-	        	cat.setText("  Category:  " + fav.getCategory());
-	        	diff.setText("  Difficulty:  " + fav.getDifficulty());
-	        	prep.setText("  Preparation time:  " + fav.getTime());
-	        	necLabel.setText(fav.getNecessary());
-	        	prepLabel.setText(fav.getPreparation());
-	        	
-	        }else{
-	        	recLabel.setText("You haven't a favourite recipe yet");
-	        	title.setVisible(false);
-	        	cat.setVisible(false);
-	        	diff.setVisible(false);
-	        	prep.setVisible(false);
-	        	necLabel.setVisible(false);
-	        	prepLabel.setVisible(false);
-	        	
-	        }
+	        checkName(lm.getUser().getUsername(),recLabel,title, cat,diff, prep, necLabel, prepLabel);
+	        
 	        
 	        ingStage.show();
 	        
@@ -357,11 +366,11 @@ public class HomePage {
 					tableView.setItems(list);
 				}
 			}else {
-				Alert alert = new Alert(AlertType.INFORMATION);
-				alert.setTitle("Information");
-				alert.setHeaderText("Information!");
-				alert.setContentText("There are not popular recipes yet!");
-				alert.showAndWait();
+				Alert alertR = new Alert(AlertType.INFORMATION);
+				alertR.setTitle("Information");
+				alertR.setHeaderText("Information!");
+				alertR.setContentText("There are not popular recipes yet!");
+				alertR.showAndWait();
 			}
 			
 			
@@ -388,7 +397,7 @@ public class HomePage {
 	            }
 			}));
 		} catch (IOException e1) {
-			e1.printStackTrace();
+			logger.log(null, CONTEXT,e1);
 		}
 		
 

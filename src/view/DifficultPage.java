@@ -3,6 +3,7 @@ package view;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import bean.RecipeBean;
 import bean.UserBean;
@@ -41,6 +42,8 @@ public class DifficultPage {
 	
 	LoginManager lm =LoginManager.getInstance();
 	UserBean ub= lm.getUser();
+	static Logger logger = Logger.getAnonymousLogger();
+	private static final String CONTEXT = "context";
 	
 	
 		
@@ -54,7 +57,7 @@ public class DifficultPage {
 	    try {
 			graphicController.start(stage);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.log(null, CONTEXT,e);
 		}	
 	}
 	
@@ -193,7 +196,7 @@ public class DifficultPage {
 	        diffStage.show();     
 		} catch (IOException e1) {
 		
-			e1.printStackTrace();
+			logger.log(null, CONTEXT,e1);
 		}
 		
 	}
