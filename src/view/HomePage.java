@@ -79,7 +79,7 @@ public class HomePage {
 		GraphicController graphicController = new GraphicController();
 		graphicController.profilePage();
 	}
-	public void checkName(String usernameC,Label lblRec,Label lblTitle, Label lblCat,Label lblDiff, Label lblPrep, TextArea nec, TextArea prep) {
+	public boolean checkName(String usernameC,Label lblRec,Label lblTitle, Label lblCat,Label lblDiff, Label lblPrep, TextArea nec) {
 		boolean checkNm=false;
 		if (usernameC=="Chef")    {
         	daily=RecipeManager.dailyRecipe(); 
@@ -89,7 +89,7 @@ public class HomePage {
         	lblDiff.setText("  Difficulty:  " + daily.getDifficulty());
         	lblPrep.setText("  Preparation time:  " + daily.getTime());
         	nec.setText(daily.getNecessary());
-        	prep.setText(daily.getPreparation());
+        	
         	
         } else if ((fav=UserProfileManager.favRecipe(lm.getUser().getUsername()))!=null) {
         	
@@ -99,7 +99,7 @@ public class HomePage {
         	lblDiff.setText("  Difficulty:  " + fav.getDifficulty());
         	lblPrep.setText("  Preparation time:  " + fav.getTime());
         	nec.setText(fav.getNecessary());
-        	prep.setText(fav.getPreparation());
+        	
         	checkNm=true;
         	
         }
@@ -110,9 +110,10 @@ public class HomePage {
         	lblDiff.setVisible(false);
         	lblPrep.setVisible(false);
         	nec.setVisible(false);
-        	prep.setVisible(false);
+        	
         	
         }
+		return checkNm;
 	
 		
 	}
@@ -348,7 +349,16 @@ public class HomePage {
 	        });      
 	    
 	        root.getChildren().addAll(scroll,scroll2,search, tf, se);
-	        checkName(lm.getUser().getUsername(),recLabel,title, cat,diff, prep, necLabel, prepLabel);
+	        boolean checkNom= checkName(lm.getUser().getUsername(),recLabel,title, cat,diff, prep, necLabel);
+	        if(checkNom==false) {
+	        	prep.setText(daily.getPreparation());
+	        }
+	        else if(checkNom==true) {
+	        	prep.setText(fav.getPreparation());
+	        }
+	        else {
+	        	prep.setVisible(false);
+	        }
 	        
 	        
 	        ingStage.show();
