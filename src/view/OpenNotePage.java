@@ -49,6 +49,31 @@ public class OpenNotePage {
 	
 	private static final String SYSTEM = "System";
 	
+	public boolean modNote(String noteI, String noteMod) {
+		boolean checkM=false;
+		if ((nm.modifyNote(noteI, noteMod))) {
+			 Alert alertMod = new Alert(AlertType.CONFIRMATION);
+				alertMod.setTitle("Success");
+				alertMod.setHeaderText("Success!");
+				alertMod.setContentText("Note modified");
+				alertMod.showAndWait();
+				checkM=true;
+				
+		}
+		else {
+			Alert alertSave = new Alert(AlertType.INFORMATION);
+				alertSave.setTitle("Information");
+				alertSave.setHeaderText("Information!");
+				alertSave.setContentText("Note already saved");
+				alertSave.showAndWait();
+				
+			
+		}
+		
+		return checkM;
+		
+	}
+	
 	public void startOpNotePage (){
 		
 		
@@ -97,12 +122,9 @@ public class OpenNotePage {
         
         saveNotebtn.setOnAction(new EventHandler<ActionEvent>() {
  			public void handle(ActionEvent event) {
- 				if ((nm.modifyNote(nb.getNote(), txtNote.getText()))) {
- 					 Alert alertMod = new Alert(AlertType.CONFIRMATION);
- 						alertMod.setTitle("Success");
- 						alertMod.setHeaderText("Success!");
- 						alertMod.setContentText("Note modified");
- 						alertMod.showAndWait();
+ 				boolean checkMod=false;
+ 				checkMod=modNote(nb.getNote(),txtNote.getText());
+ 				if (checkMod) {
  						((Node)(event.getSource())).getScene().getWindow().hide();
  						
  				        try {
@@ -115,11 +137,7 @@ public class OpenNotePage {
  						
  				}
  				else {
- 					Alert alertSave = new Alert(AlertType.INFORMATION);
-						alertSave.setTitle("Information");
-						alertSave.setHeaderText("Information!");
-						alertSave.setContentText("Note already saved");
-						alertSave.showAndWait();
+ 					
 						((Node)(event.getSource())).getScene().getWindow().hide();
  					
  				}

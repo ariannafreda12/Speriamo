@@ -3,14 +3,12 @@ package view;
 import java.awt.Desktop;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
-
 import bean.RecipeBean;
 import bean.UserBean;
 import controller.GraphicController;
@@ -30,7 +28,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.Alert.AlertType;
@@ -50,7 +47,7 @@ import model.UserProfile;
 
 public class HomePage {
 
-	private Button backButton;
+	
 	@FXML
     private static ObservableList<Recipe> list = FXCollections.observableArrayList();
 	
@@ -95,6 +92,57 @@ public class HomePage {
        	graphicController.notePage(); 
 	}
 	
+	public ImageView inputProfileHPage(FileInputStream inH) {
+		 Image imageP = new Image(inH);
+	     ImageView userH = new ImageView(imageP);
+	     userH.setFitHeight(30);
+	     userH.setFitWidth(34);
+	     userH.setLayoutX(712);
+	     userH.setLayoutY(7);
+	     userH.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+	            try {
+					myProfile();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+	        });
+	     return userH;
+		
+	}
+	
+	public ImageView inputNoteHPage(FileInputStream inpNH) {
+		 Image imageN = new Image(inpNH);
+	     ImageView noteVH = new ImageView(imageN);
+	     noteVH.setFitHeight(39);
+	     noteVH.setFitWidth(38);
+	     noteVH.setLayoutX(490);
+	     noteVH.setLayoutY(3);
+	     noteVH.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+	            try {
+	            	createNote();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+	        });
+	     return noteVH;
+	}
+	public ImageView inputLogOutHPage(FileInputStream inpLH) {
+		 Image imageL = new Image(inpLH);
+	     ImageView logoutH = new ImageView(imageL);
+	     logoutH.setFitHeight(30);
+	     logoutH.setFitWidth(28);
+	     logoutH.setLayoutX(758);
+	     logoutH.setLayoutY(7);
+	     logoutH.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+	            try {
+	            	logOut(event);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+	        });
+	     return logoutH;
+	}
+	
 	public void startHomePage(){
 		Stage ingStage = new Stage();
 		FXMLLoader loader = new FXMLLoader (FoundRecipes.class.getResource("homePage.fxml"));
@@ -134,50 +182,20 @@ public class HomePage {
 	        hi.setLayoutX(600);
 	        hi.setFont(Font.font(SYSTEM, FontPosture.ITALIC, 18));
 	        
-	        FileInputStream inputP = new FileInputStream("src\\img\\icons8-nome-100.png");
-	        Image imageP = new Image(inputP);
-	        ImageView userView = new ImageView(imageP);
-	        userView.setFitHeight(30);
-	        userView.setFitWidth(34);
-	        userView.setLayoutX(712);
-	        userView.setLayoutY(7);
-	        userView.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-	            try {
-					myProfile();
-				} catch (Exception e) {
-					logger.log(null, CONTEXT,e);
-				}
-	        });
+	    
+	        FileInputStream inputPH = new FileInputStream("src\\img\\icons8-nome-100.png");
+	        ImageView userView= inputProfileHPage(inputPH);
+	       
+	        FileInputStream inputNH = new FileInputStream("src\\img\\icons8-libretto-a-spirale-legato-80.png");
+	        ImageView noteView = inputNoteHPage(inputNH);
+	       
 	        
-	        FileInputStream inputN = new FileInputStream("src\\img\\icons8-libretto-a-spirale-legato-80.png");
-	        Image imageN = new Image(inputN);
-	        ImageView noteView = new ImageView(imageN);
-	        noteView.setFitHeight(39);
-	        noteView.setFitWidth(38);
-	        noteView.setLayoutX(490);
-	        noteView.setLayoutY(3);
-	        noteView.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-	            try {
-					createNote();
-				} catch (Exception e) {
-					logger.log(null, CONTEXT,e);
-				}
-	        });
+	        FileInputStream inputLH = new FileInputStream("src\\img\\icons8-uscita-100.png");
+	        ImageView logoutView =inputLogOutHPage(inputLH);
 	        
-	        FileInputStream inputL = new FileInputStream("src\\img\\icons8-uscita-100.png");
-	        Image imageL = new Image(inputL);
-	        ImageView logoutView = new ImageView(imageL);
-	        logoutView.setFitHeight(30);
-	        logoutView.setFitWidth(28);
-	        logoutView.setLayoutX(758);
-	        logoutView.setLayoutY(7);
-	        logoutView.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-	            try {
-					logOut(event);
-				} catch (Exception e) {
-					logger.log(null, CONTEXT,e);
-				}
-	        });
+	      
+	      
+	    
 	        
 	        if (lm.getUser().getUsername()=="Chef"){
 				noteView.setVisible(false);
@@ -313,8 +331,9 @@ public class HomePage {
 	        }
 	        
 	        ingStage.show();
-	        popularRecipe=RecipeManager.popularRecipe(); 
-	    	
+	        
+			popularRecipe=RecipeManager.popularRecipe(); 
+		
 			if (popularRecipe!= null) {
 			//cycle for found recipes
 				
@@ -355,15 +374,14 @@ public class HomePage {
 	            } catch (Exception e) {
 	            	logger.log(null, CONTEXT,e);
 	            }
-	        }));
-		
-
+			}));
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-}
-        
 		
+
+	}
+
 	public void go(ActionEvent e){
 		list.clear();
 		((Node)(e.getSource())).getScene().getWindow().hide();
