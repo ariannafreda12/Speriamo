@@ -77,7 +77,7 @@ public class NotesDao {
 	        try {
 	            
 	            connecctionAddNote = DriverManager.getConnection(URL, USER, PASS);
-	           try { statementAddNote = connecctionAddNote.createStatement();
+	           statementAddNote = connecctionAddNote.createStatement();
 	            String sqlAddNote= String.format(Query.SAVENOTEQUERY,note,username);
 
 	            statementAddNote = connecctionAddNote.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
@@ -88,27 +88,27 @@ public class NotesDao {
 	            
 	           
 
-	           } finally {
-	        	   statementAddNote.close();
-	        	   connecctionAddNote.close();
-	           }
+	           
+	            statementAddNote.close();
+	         connecctionAddNote.close();
+	           
 	          
 	            return true;
 	        } catch (SQLException seAddNote) {
-	            // Errore durante l'apertura della connessione
+	           
 	        	logger.log(null, CONTEXT,seAddNote);
 	        } catch (Exception eAddNote) {
-	            // Errore nel loading del driver
+	           
 	        	logger.log(null, CONTEXT,eAddNote);
 	        } finally {
 	            try {
-	                if (statementAddNote != null)
+	               
 	                    statementAddNote.close();
 	            } catch (SQLException se2AddNote) {
 	            	logger.log(null, CONTEXT,se2AddNote);
 	            }
 	            try {
-	                if (connecctionAddNote != null)
+	               
 	                    connecctionAddNote.close();
 	            } catch (SQLException seAddNote) {
 	            	logger.log(null, CONTEXT,seAddNote);
