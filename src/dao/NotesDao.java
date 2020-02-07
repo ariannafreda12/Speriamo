@@ -17,31 +17,31 @@ public class NotesDao {
 	private static final String URL = "jdbc:postgresql://localhost:5432/postgres";
 	private static final String USER = "postgres";
 	private static final String PASS = "postgres";
-	private static Connection connection = null;
+	private static Statement statementNote = null;
+	private static Connection connectionNote = null;
+	
 	
 	static Logger logger = Logger.getAnonymousLogger();
 	private static final String CONTEXT = "context";
 	
-	private static Statement statementAddNote = null;
-	private static Connection connecctionAddNote = null;
 	
 	private NotesDao() {
 	    throw new IllegalStateException("Utility class");
 	  }
 	
 	public static Set<Notes> userNotesDao(String username) {
-		 Statement statementUserNote = null;
+		 
 		 Notes notes = null;
 		 Set<Notes> n = new HashSet<>();
 		 
 		 
 			try {
-				connection = DriverManager.getConnection(URL, USER, PASS);
-				statementUserNote = connection.createStatement();
+				connectionNote = DriverManager.getConnection(URL, USER, PASS);
+				statementNote = connectionNote.createStatement();
 				
 					
 					String sqlUserNote = String.format(Query.NOTESQUERY, username);
-					ResultSet rsUserNote = statementUserNote.executeQuery(sqlUserNote);
+					ResultSet rsUserNote = statementNote.executeQuery(sqlUserNote);
 					
 					while(rsUserNote.next()) {
 						
@@ -57,14 +57,14 @@ public class NotesDao {
 			} finally {
 				
 			      try {
-		                if (statementUserNote != null)
-		                    statementUserNote.close();
+		                if (statementNote != null)
+		                    statementNote.close();
 		            } catch (SQLException se2UserNote) {
 		            	logger.log(null, CONTEXT,se2UserNote);
 		            }
 		            try {
-		                if (connection != null)
-		                    connection.close();
+		                if (connectionNote != null)
+		                    connectionNote.close();
 		            } catch (SQLException seUserNote) {
 		            	logger.log(null, CONTEXT,seUserNote);
 		            }
@@ -78,12 +78,12 @@ public class NotesDao {
 	    
 	        try {
 	        
-	            connecctionAddNote = DriverManager.getConnection(URL, USER, PASS);
-	           statementAddNote = connecctionAddNote.createStatement();
+	            connectionNote = DriverManager.getConnection(URL, USER, PASS);
+	           statementNote = connectionNote.createStatement();
 	            String sqlAddNote= String.format(Query.SAVENOTEQUERY,note,username);
 
-	            statementAddNote = connecctionAddNote.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-	            int rsAddNote = statementAddNote.executeUpdate(sqlAddNote);
+	            statementNote = connectionNote.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+	            int rsAddNote = statementNote.executeUpdate(sqlAddNote);
 	            if (rsAddNote != 1) {
 	                return false;
 	            }
@@ -91,8 +91,8 @@ public class NotesDao {
 	           
 
 	           
-	         statementAddNote.close();
-	         connecctionAddNote.close();
+	         statementNote.close();
+	         connectionNote.close();
 	           
 	          
 	            return true;
@@ -105,13 +105,13 @@ public class NotesDao {
 	        } finally {
 	            try {
 	               
-	                    statementAddNote.close();
+	                    statementNote.close();
 	            } catch (SQLException se2AddNote) {
 	            	logger.log(null, CONTEXT,se2AddNote);
 	            }
 	            try {
 	               
-	                    connecctionAddNote.close();
+	                    connectionNote.close();
 	            } catch (SQLException seAddNote) {
 	            	logger.log(null, CONTEXT,seAddNote);
 	            }
@@ -123,13 +123,13 @@ public class NotesDao {
 	 
 	
 	 public static Notes chooseNoteDao(String note) {
-		 Statement statementChooseNote = null;
+		
 		 Notes notes = null;
 		 try {
-				connection = DriverManager.getConnection(URL, USER, PASS);
-				statementChooseNote = connection.createStatement();
+				connectionNote = DriverManager.getConnection(URL, USER, PASS);
+				statementNote = connectionNote.createStatement();
 					String sqlChooseNote = String.format(Query.OPENNOTEQUERY,note);
-					ResultSet rsChooseNote = statementChooseNote.executeQuery(sqlChooseNote);
+					ResultSet rsChooseNote = statementNote.executeQuery(sqlChooseNote);
 					
 					while(rsChooseNote.next()) {
 						
@@ -141,10 +141,10 @@ public class NotesDao {
 				logger.log(null, CONTEXT,eChooseNote);
 			} finally {
 				try {
-					if(connection != null)
-						connection.close();
-					if(statementChooseNote != null)
-						statementChooseNote.close();
+					if(connectionNote != null)
+						connectionNote.close();
+					if(statementNote != null)
+						statementNote.close();
 				} catch (SQLException eChooseNote) {
 					logger.log(null, CONTEXT,eChooseNote);
 				}
@@ -152,23 +152,22 @@ public class NotesDao {
 			return notes;		 
 	 }
 	 public static boolean modifyNoteDao(String note, String noteModified) {
-		  Statement statementModifyNote = null;
-	      Connection connectionModifyNote = null;
+		 
 	      
 	        try {
-	            connectionModifyNote = DriverManager.getConnection(URL, USER, PASS);
-	            statementModifyNote = connectionModifyNote.createStatement();
+	            connectionNote = DriverManager.getConnection(URL, USER, PASS);
+	            statementNote = connectionNote.createStatement();
 	            String sql1ModifyNote= String.format(Query.MODIFYNOTEQUERY,noteModified,note);
-	            statementModifyNote = connectionModifyNote.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-	            int rsModifyNote = statementModifyNote.executeUpdate(sql1ModifyNote);
+	            statementNote = connectionNote.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+	            int rsModifyNote = statementNote.executeUpdate(sql1ModifyNote);
 
 	            if (rsModifyNote != 1) {
 	               
 	                return false;
 	            }
 
-	            statementModifyNote.close();
-	            connectionModifyNote.close();
+	            statementNote.close();
+	            connectionNote.close();
 	            return true;
 
 	          
@@ -182,14 +181,14 @@ public class NotesDao {
 	        	logger.log(null, CONTEXT,eModifyNote);
 	        } finally {
 	            try {
-	                if (statementModifyNote != null)
-	                    statementModifyNote.close();
+	                if (statementNote != null)
+	                    statementNote.close();
 	            } catch (SQLException se2ModifyNote) {
 	            	logger.log(null, CONTEXT,se2ModifyNote);
 	            }
 	            try {
-	                if (connectionModifyNote != null)
-	                    connectionModifyNote.close();
+	                if (connectionNote != null)
+	                    connectionNote.close();
 	            } catch (SQLException seModifyNote) {
 	            	logger.log(null, CONTEXT,seModifyNote);
 	            }
@@ -197,22 +196,20 @@ public class NotesDao {
 	        return false;
 	    }
 	 public static boolean deleteNoteDao(String note, String username) {
-		  Statement statementDeleteNote = null;
-	      Connection connectionDeleteNote = null;
-	     
+		 
 	        try {
-	            connectionDeleteNote = DriverManager.getConnection(URL, USER, PASS);
-	            statementDeleteNote = connectionDeleteNote.createStatement();
+	            connectionNote = DriverManager.getConnection(URL, USER, PASS);
+	            statementNote = connectionNote.createStatement();
 	            String sql1DeleteNote= String.format(Query.DELETENOTEQUERY,note,username);
-	            statementDeleteNote = connectionDeleteNote.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-	            int rsDeleteNote = statementDeleteNote.executeUpdate(sql1DeleteNote);
+	            statementNote = connectionNote.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+	            int rsDeleteNote = statementNote.executeUpdate(sql1DeleteNote);
 
 	            if (rsDeleteNote != 1) {
 	                return false;
 	            }
 
-	            statementDeleteNote.close();
-	            connectionDeleteNote.close();
+	            statementNote.close();
+	            connectionNote.close();
 	            return true;
 	          
 
@@ -222,14 +219,14 @@ public class NotesDao {
 	        	logger.log(null, CONTEXT,eDeleteNote);
 	        } finally {
 	            try {
-	                if (statementDeleteNote != null)
-	                    statementDeleteNote.close();
+	                if (statementNote != null)
+	                    statementNote.close();
 	            } catch (SQLException se2DeleteNote) {
 	            	logger.log(null, CONTEXT,se2DeleteNote);
 	            }
 	            try {
-	                if (connectionDeleteNote != null)
-	                    connectionDeleteNote.close();
+	                if (connectionNote != null)
+	                    connectionNote.close();
 	            } catch (SQLException seDeleteNote) {
 	            	logger.log(null, CONTEXT,seDeleteNote);
 	            }
