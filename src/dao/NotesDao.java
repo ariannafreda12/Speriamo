@@ -55,24 +55,17 @@ public class NotesDao {
 			} catch(Exception eUserNote) {
 				logger.log(null, CONTEXT,eUserNote);
 			} finally {
-				
-			      try {
-		                if (statementNote != null)
-		                    statementNote.close();
-		            } catch (SQLException se2UserNote) {
-		            	logger.log(null, CONTEXT,se2UserNote);
-		            }
-		            try {
-		                if (connectionNote != null)
-		                    connectionNote.close();
-		            } catch (SQLException seUserNote) {
-		            	logger.log(null, CONTEXT,seUserNote);
-		            } try {
-		            	 if(rsNote !=null)
-								rsNote.close();
-		            } catch (SQLException se1UserNote) {
-		            	logger.log(null, CONTEXT,se1UserNote);
-		            	}
+				try {
+					if(connectionNote != null)
+						connectionNote.close();
+					if(statementNote != null)
+						statementNote.close();
+					if(rsNote !=null)
+						rsNote.close();
+				} catch (SQLException e2UserNote) {
+					logger.log(null, CONTEXT,e2UserNote);
+				}
+			
 		           
 		           
 			}
