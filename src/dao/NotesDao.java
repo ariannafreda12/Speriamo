@@ -20,7 +20,7 @@ public class NotesDao {
 	private static Statement statementNote = null;
 	private static Connection connectionNote = null;
 	
-	
+	private static ResultSet rsNote= null;
 	static Logger logger = Logger.getAnonymousLogger();
 	private static final String CONTEXT = "context";
 	
@@ -41,11 +41,11 @@ public class NotesDao {
 				
 					
 					String sqlUserNote = String.format(Query.NOTESQUERY, username);
-					ResultSet rsUserNote = statementNote.executeQuery(sqlUserNote);
+					ResultSet rsNote = statementNote.executeQuery(sqlUserNote);
 					
-					while(rsUserNote.next()) {
+					while(rsNote.next()) {
 						
-						notes = new Notes(rsUserNote.getString("note"),username);
+						notes = new Notes(rsNote.getString("note"),username);
 								
 								n.add(notes);
 								
@@ -67,7 +67,13 @@ public class NotesDao {
 		                    connectionNote.close();
 		            } catch (SQLException seUserNote) {
 		            	logger.log(null, CONTEXT,seUserNote);
-		            }
+		            } try {
+		            	 if(rsNote !=null)
+								rsNote.close();
+		            } catch (SQLException se1UserNote) {
+		            	logger.log(null, CONTEXT,se1UserNote);
+		            	}
+		           
 		           
 			}
 			return n;		 
@@ -129,11 +135,11 @@ public class NotesDao {
 				connectionNote = DriverManager.getConnection(URL, USER, PASS);
 				statementNote = connectionNote.createStatement();
 					String sqlChooseNote = String.format(Query.OPENNOTEQUERY,note);
-					ResultSet rsChooseNote = statementNote.executeQuery(sqlChooseNote);
+					rsNote = statementNote.executeQuery(sqlChooseNote);
 					
-					while(rsChooseNote.next()) {
+					while(rsNote.next()) {
 						
-						notes = new Notes(note,rsChooseNote.getString("username"));
+						notes = new Notes(note,rsNote.getString("username"));
 					}
 				
 		
@@ -145,6 +151,8 @@ public class NotesDao {
 						connectionNote.close();
 					if(statementNote != null)
 						statementNote.close();
+					if(rsNote !=null)
+						rsNote.close();
 				} catch (SQLException eChooseNote) {
 					logger.log(null, CONTEXT,eChooseNote);
 				}
@@ -174,10 +182,10 @@ public class NotesDao {
 	           
 
 	        } catch (SQLException seModifyNote) {
-	            // Errore durante l'apertura della connessione
+	          
 	        	logger.log(null, CONTEXT,seModifyNote);
 	        } catch (Exception eModifyNote) {
-	            // Errore nel loading del driver
+	           
 	        	logger.log(null, CONTEXT,eModifyNote);
 	        } finally {
 	            try {
