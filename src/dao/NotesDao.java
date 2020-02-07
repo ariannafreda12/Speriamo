@@ -85,12 +85,7 @@ public class NotesDao {
 	            if (rsAddNote != 1) {
 	                return false;
 	            }
-	            
-	           
-
-	           
-	            statementAddNote.close();
-	         connecctionAddNote.close();
+	         
 	           
 	          
 	            return true;

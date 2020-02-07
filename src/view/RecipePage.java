@@ -2,6 +2,7 @@ package view;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import bean.RecipeBean;
@@ -50,7 +51,7 @@ public class RecipePage{
 	private Button likebtn = new Button();	
 	
 	static Logger logger = Logger.getAnonymousLogger();
-	private static final String CONTEXT = "context";
+	
 	
 	private static final String SYSTEM = "System";
 	
@@ -265,6 +266,7 @@ public class RecipePage{
 					
 						boolean checkRev=reviewStudy(rb.getRecBeanTitle(),ub.getUsername(),rb.getRecBeanReview());
 						 if(checkRev) {
+							 System.out.println(rb.getRecBeanReview());
 							 likebtn.setVisible(false);
 							 reviewLabel.setText("You like it!");
 							 
@@ -276,8 +278,9 @@ public class RecipePage{
 				try {
 					event.wait(0);
 				} catch (InterruptedException e) {
-					logger.log(null, CONTEXT,e);
-				}
+					logger.log(Level.WARNING, "Interrupted!", e);
+				    Thread.currentThread().interrupt();
+				  }
 					}
 				}
 			);
