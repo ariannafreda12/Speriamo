@@ -166,18 +166,18 @@ public class HomePage {
 	}
 	
 	
-	public boolean chooseRec(String t, Recipe rc1) {
+	public boolean chooseRec(String t) {
 		boolean checkRec=false;
-		rc1 = new Recipe(null,null,null,null,null,null,0); 
-		rc1= rm.chooseRecipe(t);
-    	if(rc1!=null) { 
-      		rb.setRecBeanTitle(rc1.getTitle());
-      		rb.setRecBeanDifficulty(rc1.getDifficulty());
-      		rb.setRecBeanCategory(rc1.getCategory());
-      		rb.setRecBeanPreparation(rc1.getPreparation());
-      		rb.setRecBeanNecessary(rc1.getNecessary());
-      		rb.setRecBeanTime(rc1.getTime());
-      		rb.setRecBeanReview(rc1.getReview());
+		
+		rc= rm.chooseRecipe(t);
+    	if(rc!=null) { 
+      		rb.setRecBeanTitle(rc.getTitle());
+      		rb.setRecBeanDifficulty(rc.getDifficulty());
+      		rb.setRecBeanCategory(rc.getCategory());
+      		rb.setRecBeanPreparation(rc.getPreparation());
+      		rb.setRecBeanNecessary(rc.getNecessary());
+      		rb.setRecBeanTime(rc.getTime());
+      		rb.setRecBeanReview(rc.getReview());
     		rm.setRecipe(rb);
     		checkRec=true;
     		}
@@ -375,7 +375,7 @@ public class HomePage {
 			}
 			
 			tableView.addEventHandler(MouseEvent.MOUSE_CLICKED, (event -> {
-	          if(chooseRec(tableView.getSelectionModel().getSelectedCells().get(0).getTableColumn().getCellObservableValue(tableView.getSelectionModel().getSelectedCells().get(0).getRow()).getValue().toString(),rc)) { 
+	          if(chooseRec(tableView.getSelectionModel().getSelectedCells().get(0).getTableColumn().getCellObservableValue(tableView.getSelectionModel().getSelectedCells().get(0).getRow()).getValue().toString())) { 
 	              		gc.showRecipe();}}
 	           ));
 		} catch (IOException e1) {
