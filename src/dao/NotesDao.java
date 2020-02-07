@@ -22,6 +22,9 @@ public class NotesDao {
 	static Logger logger = Logger.getAnonymousLogger();
 	private static final String CONTEXT = "context";
 	
+	private static Statement statementAddNote = null;
+	private static Connection connecctionAddNote = null;
+	
 	private NotesDao() {
 	    throw new IllegalStateException("Utility class");
 	  }
@@ -71,11 +74,10 @@ public class NotesDao {
 	 }
 	
 	 public static boolean addNoteDao(String note, String username) {
-		  Statement statementAddNote = null;
-	      Connection connecctionAddNote = null;
+		 
 	    
 	        try {
-	            
+	        
 	            connecctionAddNote = DriverManager.getConnection(URL, USER, PASS);
 	           statementAddNote = connecctionAddNote.createStatement();
 	            String sqlAddNote= String.format(Query.SAVENOTEQUERY,note,username);
@@ -85,7 +87,12 @@ public class NotesDao {
 	            if (rsAddNote != 1) {
 	                return false;
 	            }
-	         
+	            
+	           
+
+	           
+	         statementAddNote.close();
+	         connecctionAddNote.close();
 	           
 	          
 	            return true;

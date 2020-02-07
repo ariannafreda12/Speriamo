@@ -266,7 +266,6 @@ public class RecipePage{
 					
 						boolean checkRev=reviewStudy(rb.getRecBeanTitle(),ub.getUsername(),rb.getRecBeanReview());
 						 if(checkRev) {
-							 System.out.println(rb.getRecBeanReview());
 							 likebtn.setVisible(false);
 							 reviewLabel.setText("You like it!");
 							 
@@ -310,7 +309,7 @@ public class RecipePage{
 	
 	public void saveRecipe(){
 		String name=lm.getUser().getUsername();
-		if(name=="Chef") {
+		if(name.equals("Chef")) {
 			Alert alert = new Alert(AlertType.WARNING);
 			alert.setTitle("Hi Chef");
 			alert.setHeaderText("Sorry!");
@@ -320,7 +319,7 @@ public class RecipePage{
 			GraphicController graphicController = new GraphicController();
             graphicController.registrationPage();
 		}
-		else if((name!="Chef" && upm.saveRecipe(rb.getRecBeanTitle(), rb.getRecBeanPreparation(), rb.getRecBeanDifficulty(), rb.getRecBeanCategory(), rb.getrecBeanTime(), rb.getRecBeanNecessary(), ub.getUsername()))) {
+		else if((!name.equals("Chef") && upm.saveRecipe(rb.getRecBeanTitle(), rb.getRecBeanPreparation(), rb.getRecBeanDifficulty(), rb.getRecBeanCategory(), rb.getrecBeanTime(), rb.getRecBeanNecessary(), ub.getUsername()))) {
 		
 			Alert alert = new Alert(AlertType.CONFIRMATION);
 			alert.setTitle("Success");
