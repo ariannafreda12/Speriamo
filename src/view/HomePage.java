@@ -168,7 +168,7 @@ public class HomePage {
 	
 	public boolean chooseRec(String t, Recipe rc1) {
 		boolean checkRec=false;
-		
+		rc1 = new Recipe(null,null,null,null,null,null,0); 
 		rc1= rm.chooseRecipe(t);
     	if(rc1!=null) { 
       		rb.setRecBeanTitle(rc1.getTitle());
