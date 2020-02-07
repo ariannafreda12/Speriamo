@@ -2,6 +2,7 @@ package view;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import bean.RecipeBean;
 import bean.UserBean;
@@ -43,6 +44,9 @@ public class MealPage {
 		
 	RecipeBean rb = new RecipeBean();
 	RecipeManager rm= RecipeManager.getInstance();
+	
+	static Logger logger = Logger.getAnonymousLogger();
+	 private static final String CONTEXT = "context";
 	
 	public void chooseStarters(MouseEvent starters){
 		rb.setRecBeanCategory("starters");
@@ -107,7 +111,8 @@ public class MealPage {
         try {
 			graphicController.start(stage);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.log(null, CONTEXT,e);
+
 		}
 		
 	}
@@ -212,8 +217,7 @@ public class MealPage {
 	        mealStage.show();
 		
 		} catch (IOException e1) {
-		
-			e1.printStackTrace();
+			logger.log(null, CONTEXT,e1);
 		}
 		
 		

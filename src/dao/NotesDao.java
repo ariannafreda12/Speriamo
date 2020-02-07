@@ -41,7 +41,7 @@ public class NotesDao {
 				
 					
 					String sqlUserNote = String.format(Query.NOTESQUERY, username);
-					ResultSet rsNote = statementNote.executeQuery(sqlUserNote);
+					rsNote = statementNote.executeQuery(sqlUserNote);
 					
 					while(rsNote.next()) {
 						
@@ -55,17 +55,21 @@ public class NotesDao {
 			} catch(Exception eUserNote) {
 				logger.log(null, CONTEXT,eUserNote);
 			} finally {
-				try {
-					if(connectionNote != null)
-						connectionNote.close();
-					if(statementNote != null)
-						statementNote.close();
-					if(rsNote !=null)
-						rsNote.close();
-				} catch (SQLException e2UserNote) {
-					logger.log(null, CONTEXT,e2UserNote);
-				}
-			
+			   try {
+		            statementNote.close();
+	            } catch (SQLException se2AddNote) {
+	            	logger.log(null, CONTEXT,se2AddNote);
+	            }
+	            try {
+	            	connectionNote.close();
+	            } catch (SQLException seAddNote) {
+	            	logger.log(null, CONTEXT,seAddNote);
+	            }
+	            try {
+	            	rsNote.close();
+	            } catch (SQLException se1AddNote) {
+	            	logger.log(null, CONTEXT,se1AddNote);
+	            }
 		           
 		           
 			}

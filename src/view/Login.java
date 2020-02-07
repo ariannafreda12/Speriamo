@@ -2,6 +2,7 @@ package view;
 
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import bean.UserBean;
 import controller.GraphicController;
@@ -38,6 +39,9 @@ public class Login {
 		
 		LoginManager lm = LoginManager.getInstance();
 		
+		static Logger logger = Logger.getAnonymousLogger();
+		private static final String CONTEXT = "context";
+		
 	    //login method
 	    public void loginMethod(ActionEvent actionEvent)  {
 	    	
@@ -55,10 +59,11 @@ public class Login {
 			            ub.setPassword( pass );
 			            ub.setUsername(user);
 			            
-			            ub.setEmail(lm.login(user,pass).getEmail());
+			           
 			            
 			            if (ub.validate()) 
 			            {
+			            	ub.setEmail(lm.login(user,pass).getEmail());
 			            	lm.setUser(ub);
 			            	((Node)(actionEvent.getSource())).getScene().getWindow().hide();
 			            	GraphicController graphicController = new GraphicController();
@@ -107,6 +112,7 @@ public class Login {
 	    	
 	    	UserBean ub = new UserBean();
             ub.setUsername("Chef");
+            ub.setPassword("xxx");
             ub.setEmail("chef@user.it");
             lm.setUser(ub);
 	    	((Node)(mouseEvent.getSource())).getScene().getWindow().hide();
@@ -128,8 +134,7 @@ public class Login {
 	        	loginStage.setScene(scene);
 	        	loginStage.show();
 			} catch (IOException e) {
-			
-				e.printStackTrace();
+				logger.log(null, CONTEXT,e);
 			}
 			
 	}

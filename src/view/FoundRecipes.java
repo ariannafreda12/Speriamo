@@ -292,7 +292,7 @@ public class FoundRecipes {
 	            }
 	        }));
 		} catch (IOException e1) {
-			e1.printStackTrace();
+			logger.log(null, CONTEXT,e1);
 		}
 		
 	}

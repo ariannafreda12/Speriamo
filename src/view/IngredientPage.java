@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import bean.RecipeBean;
 import bean.UserBean;
@@ -49,6 +50,9 @@ public class IngredientPage {
 	Set<String> choiceList = new HashSet<>();
 	Set<CheckBox> cb = new HashSet<>();
 	
+	static Logger logger = Logger.getAnonymousLogger();
+	private static final String CONTEXT = "context";
+	
 	private static final String SYSTEM = "System";
 	
 	String[] varius = {"Butter", "Cheese", "Chocolate", "Eggs", "Flour", "Honey", "Jam", "Milk", "Oil", "Pasta", "Rice", "Salt", "Sugar", "Water", "Yeast", "Yoghurt"};
@@ -89,7 +93,7 @@ public class IngredientPage {
         try {
 			graphicController.start(stage);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.log(null, CONTEXT,e);
 		}
 	}
 	
@@ -302,7 +306,7 @@ public class IngredientPage {
 			ingStage.setScene(scene);
 		    ingStage.show();
 		} catch (IOException e1) {
-			e1.printStackTrace();
+			logger.log(null, CONTEXT,e1);
 		}
 		
 	    

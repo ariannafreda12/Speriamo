@@ -51,6 +51,7 @@ public class RecipePage{
 	private Button likebtn = new Button();	
 	
 	static Logger logger = Logger.getAnonymousLogger();
+	private static final String CONTEXT= "context";
 	
 	
 	private static final String SYSTEM = "System";
@@ -78,7 +79,7 @@ public class RecipePage{
         try {
 			graphicController.start(stage);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.log(null, CONTEXT,e);
 		}
 	}
 	
@@ -301,7 +302,7 @@ public class RecipePage{
 	        ingStage.setScene(scene);
 	        ingStage.show();
 		} catch (IOException e1) {
-			e1.printStackTrace();
+			logger.log(null, CONTEXT,e1);
 		}
 	}
 		

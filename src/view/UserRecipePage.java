@@ -2,6 +2,8 @@ package view;
 
 import java.io.IOException;
 import java.util.Optional;
+import java.util.logging.Logger;
+
 import bean.RecipeBean;
 import bean.UserBean;
 import bean.UserRecipeBean;
@@ -45,6 +47,9 @@ public class UserRecipePage {
 	private Button deletebtn = new Button();
 	@FXML
 	private Button backButton;
+	
+	static Logger logger = Logger.getAnonymousLogger();
+	 private static final String CONTEXT = "context";
 	
 	private static final String SYSTEM = "System";
 	
@@ -131,7 +136,7 @@ public class UserRecipePage {
 	 	 	 						alertRecipe.showAndWait();
 	 								
 	 							} catch (Exception e) {
-	 								e.printStackTrace();
+	 								logger.log(null, CONTEXT,e);
 	 							}	
 	 	 				}else {
 	 	 					Alert alertDeleteRecipe = new Alert(AlertType.INFORMATION);
@@ -157,7 +162,7 @@ public class UserRecipePage {
 	        ingStage.show();
 	             
 		} catch (IOException e1) {
-			e1.printStackTrace();
+			logger.log(null, CONTEXT,e1);
 		}
 		
 	}

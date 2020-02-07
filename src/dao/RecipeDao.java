@@ -20,7 +20,11 @@ public class RecipeDao {
 	private static final String URL = "jdbc:postgresql://localhost:5432/postgres";
 	private static final String USER = "postgres";
 	private static final String PASS = "postgres";
-	private static Connection connection = null;
+	private static Connection connectionRecipe = null;
+	private static Statement statementRecipe = null;
+	private static ResultSet rsRecipe = null;
+	
+	
 	private static final String TITLE = "title";
 	private static final String CATEGORY= "category";
 	private static final String DIFFICULTY = "difficulty";
@@ -38,25 +42,23 @@ public class RecipeDao {
 	
 	//find recipe by ingredient
 	 public static Set<Recipe> ingredientsDao(Set <String> ingredientList, String category,String difficulty) {
-		 Statement statementIngredient = null;
 		 Recipe r = null;
 		 Set<Recipe> recipe= new HashSet<>();
 		
 		 
 			try {
-				connection = DriverManager.getConnection(URL, USER, PASS);
-				statementIngredient = connection.createStatement();
+				connectionRecipe = DriverManager.getConnection(URL, USER, PASS);
+				statementRecipe = connectionRecipe.createStatement();
 				Iterator<String> it;
 				it=ingredientList.iterator();
 				while(it.hasNext()) {
 					
 					String sqlIngredient = String.format(Query.RECIPESQUERY,category,difficulty, it.next());
-				
-					ResultSet rsIngredient = statementIngredient.executeQuery(sqlIngredient);
+					rsRecipe = statementRecipe.executeQuery(sqlIngredient);
 					
-					while(rsIngredient.next()) {
-						r = new Recipe(rsIngredient.getString(TITLE), rsIngredient.getString(PREPARATION),
-								 rsIngredient.getString(DIFFICULTY),  rsIngredient.getString(CATEGORY), rsIngredient.getString(TIME), rsIngredient.getString(NECESSARY),rsIngredient.getInt(REVIEW));
+					while(rsRecipe.next()) {
+						r = new Recipe(rsRecipe.getString(TITLE), rsRecipe.getString(PREPARATION),
+								 rsRecipe.getString(DIFFICULTY),  rsRecipe.getString(CATEGORY), rsRecipe.getString(TIME), rsRecipe.getString(NECESSARY),rsRecipe.getInt(REVIEW));
 						recipe.add(r);
 					}
 				}
@@ -64,10 +66,12 @@ public class RecipeDao {
 				logger.log(null, CONTEXT,eIngredient);
 			} finally {
 				try {
-					if(connection != null)
-						connection.close();
-					if(statementIngredient != null)
-						statementIngredient.close();
+					if(connectionRecipe != null)
+						connectionRecipe.close();
+					if(statementRecipe != null)
+						statementRecipe.close();
+					if(rsRecipe != null)
+						rsRecipe.close();
 				} catch (SQLException eIngredient) {
 					logger.log(null, CONTEXT,eIngredient);
 				}
@@ -77,22 +81,21 @@ public class RecipeDao {
 	 
 	 //popular recipe table
 	 public static Set<Recipe> popularDao() {
-		 Statement statementPopular = null;
+		
 		 Recipe r = null;
-		 
 		 Set<Recipe> popularRecipe= new HashSet<>();
 		 
 			try {
 		
-				connection = DriverManager.getConnection(URL, USER, PASS);
-				statementPopular = connection.createStatement();
+				connectionRecipe = DriverManager.getConnection(URL, USER, PASS);
+				statementRecipe = connectionRecipe.createStatement();
 			
 				String sqlPopular = String.format(Query.POPULARRECIPEQUERY);
-				ResultSet rsPopular = statementPopular.executeQuery(sqlPopular);
+				rsRecipe = statementRecipe.executeQuery(sqlPopular);
 					
-				while(rsPopular.next()) {
-					r = new Recipe(rsPopular.getString(TITLE), rsPopular.getString(PREPARATION),
-							 rsPopular.getString(DIFFICULTY),  rsPopular.getString(CATEGORY), rsPopular.getString(TIME), rsPopular.getString(NECESSARY),rsPopular.getInt(REVIEW));
+				while(rsRecipe.next()) {
+					r = new Recipe(rsRecipe.getString(TITLE), rsRecipe.getString(PREPARATION),
+							 rsRecipe.getString(DIFFICULTY),  rsRecipe.getString(CATEGORY), rsRecipe.getString(TIME), rsRecipe.getString(NECESSARY),rsRecipe.getInt(REVIEW));
 				
 				popularRecipe.add(r);
 				}
@@ -101,10 +104,12 @@ public class RecipeDao {
 				logger.log(null, CONTEXT,ePopular);
 			} finally {
 				try {
-					if(connection != null)
-						connection.close();
-					if(statementPopular != null)
-						statementPopular.close();
+					if(connectionRecipe != null)
+						connectionRecipe.close();
+					if(statementRecipe != null)
+						statementRecipe.close();
+					if(rsRecipe != null)
+						rsRecipe.close();
 				} catch (SQLException ePopular) {
 					logger.log(null, CONTEXT,ePopular);
 				}
@@ -114,31 +119,32 @@ public class RecipeDao {
 	 
 	 //daily recipe 
 	 public static Recipe dailyRecipeDao() {
-		 
-		 Statement statementDaily = null;
+		
 		 Recipe dailyRecipe= null;
 		 
 			try {
-				connection = DriverManager.getConnection(URL, USER, PASS);
-				statementDaily = connection.createStatement();
+				connectionRecipe = DriverManager.getConnection(URL, USER, PASS);
+				statementRecipe = connectionRecipe.createStatement();
 			
 				String sqlDaily = String.format(Query.DAILYRECIPEQUERY);
 				
-				ResultSet rsDaily = statementDaily.executeQuery(sqlDaily);
+				rsRecipe = statementRecipe.executeQuery(sqlDaily);
 				
-				while(rsDaily.next()) {
-				dailyRecipe = new Recipe(rsDaily.getString(TITLE), rsDaily.getString(PREPARATION),
-						 rsDaily.getString(DIFFICULTY),  rsDaily.getString(CATEGORY), rsDaily.getString(TIME), rsDaily.getString(NECESSARY),rsDaily.getInt(REVIEW));
+				while(rsRecipe.next()) {
+				dailyRecipe = new Recipe(rsRecipe.getString(TITLE), rsRecipe.getString(PREPARATION),
+						 rsRecipe.getString(DIFFICULTY),  rsRecipe.getString(CATEGORY), rsRecipe.getString(TIME), rsRecipe.getString(NECESSARY),rsRecipe.getInt(REVIEW));
 				}
 				
 			} catch(Exception eDaily) {
 				logger.log(null, CONTEXT,eDaily);				
 			} finally {
 				try {
-					if(connection != null)
-						connection.close();
-					if(statementDaily != null)
-						statementDaily.close();
+					if(connectionRecipe != null)
+						connectionRecipe.close();
+					if(statementRecipe != null)
+						statementRecipe.close();
+					if(rsRecipe != null)
+						rsRecipe.close();
 				} catch (SQLException eDaily) {
 					logger.log(null, CONTEXT,eDaily);
 				}
@@ -147,30 +153,29 @@ public class RecipeDao {
 	 }
 	 
 	 public static Recipe chooseRecipeDao(String title) {
-		 Statement statementChooseRecipe = null;
 		 Recipe r = null;
 			try {
-				connection = DriverManager.getConnection(URL, USER, PASS);
-				statementChooseRecipe = connection.createStatement();
+				connectionRecipe = DriverManager.getConnection(URL, USER, PASS);
+				statementRecipe = connectionRecipe.createStatement();
 					
 					String sqlChooseRecipe = String.format(Query.RECIPEQUERY,title);
+					rsRecipe = statementRecipe.executeQuery(sqlChooseRecipe);
 					
-				
-					ResultSet rsChooseRecipe = statementChooseRecipe.executeQuery(sqlChooseRecipe);
-					
-					if(rsChooseRecipe.next()) {
-						r = new Recipe(rsChooseRecipe.getString(TITLE), rsChooseRecipe.getString(PREPARATION),
-								 rsChooseRecipe.getString(DIFFICULTY),  rsChooseRecipe.getString(CATEGORY), rsChooseRecipe.getString(TIME), rsChooseRecipe.getString(NECESSARY),rsChooseRecipe.getInt(REVIEW));
+					if(rsRecipe.next()) {
+						r = new Recipe(rsRecipe.getString(TITLE), rsRecipe.getString(PREPARATION),
+								 rsRecipe.getString(DIFFICULTY),  rsRecipe.getString(CATEGORY), rsRecipe.getString(TIME), rsRecipe.getString(NECESSARY),rsRecipe.getInt(REVIEW));
 					}
 				
 			} catch(Exception eChooseRecipe) {
 				logger.log(null, CONTEXT,eChooseRecipe);
 			} finally {
 				try {
-					if(connection != null)
-						connection.close();
-					if(statementChooseRecipe != null)
-						statementChooseRecipe.close();
+					if(connectionRecipe != null)
+						connectionRecipe.close();
+					if(statementRecipe != null)
+						statementRecipe.close();
+					if(rsRecipe != null)
+						rsRecipe.close();
 				} catch (SQLException eChooseRecipe) {
 					logger.log(null, CONTEXT,eChooseRecipe);
 				}
@@ -181,24 +186,23 @@ public class RecipeDao {
 
 	 //like for recipe
 	 public static boolean reviewRecipeDao(String title, int review) {
-		  Statement statementReview = null;
-	      Connection connReview = null;
+		
 	        try {
 	           
-	            connReview = DriverManager.getConnection(URL, USER, PASS);
-	            statementReview = connReview.createStatement();
+	            connectionRecipe = DriverManager.getConnection(URL, USER, PASS);
+	            statementRecipe = connectionRecipe.createStatement();
 	            String sql1Review= String.format(Query.REVIEWQUERY,review+1, title);
 	           
-	            statementReview = connReview.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-	            int rsReview = statementReview.executeUpdate(sql1Review);
+	            statementRecipe = connectionRecipe.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+	            int rsReview = statementRecipe.executeUpdate(sql1Review);
 	            
 	            if (rsReview != 1) {
 	           
 	                return false;
 	            }
 
-	            statementReview.close();
-	            connReview.close();
+	            statementRecipe.close();
+	            connectionRecipe.close();
 	            return true;
 
 	        } catch (SQLException seReview) {
@@ -207,14 +211,14 @@ public class RecipeDao {
 	        	logger.log(null, CONTEXT,eReview);
 	        } finally {
 	            try {
-	                if (statementReview != null)
-	                    statementReview.close();
+	                if (statementRecipe != null)
+	                    statementRecipe.close();
 	            } catch (SQLException se2Review) {
 	            	logger.log(null, CONTEXT,se2Review);
 	            }
 	            try {
-	                if (connReview != null)
-	                    connReview.close();
+	                if (connectionRecipe != null)
+	                    connectionRecipe.close();
 	            } catch (SQLException seReview) {
 	            	logger.log(null, CONTEXT,seReview);
 	            }
@@ -225,24 +229,23 @@ public class RecipeDao {
 	 
 	 //add like for a recipe
 	 public static boolean addReviewDao(String username, String title) {
-		  Statement statementAddReview = null;
-	      Connection connAddReview = null;
+		
 	        try {
 	        
-	            connAddReview = DriverManager.getConnection(URL, USER, PASS);
-	            statementAddReview = connAddReview.createStatement();
+	            connectionRecipe = DriverManager.getConnection(URL, USER, PASS);
+	            statementRecipe = connectionRecipe.createStatement();
 	            String sql1AddReview= String.format(Query.SAVEREVIEWQUERY,username,true,title);
 	        
-	            statementAddReview = connAddReview.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-	            int rsAddReview = statementAddReview.executeUpdate(sql1AddReview);
+	            statementRecipe = connectionRecipe.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+	            int rsAddReview = statementRecipe.executeUpdate(sql1AddReview);
 
 	            if (rsAddReview != 1) {
 	        
 	                return false;
 	            }
 
-	            statementAddReview.close();
-	            connAddReview.close();
+	            statementRecipe.close();
+	            connectionRecipe.close();
 	            return true;
 
 	        } catch (SQLException seAddReview) {
@@ -252,14 +255,14 @@ public class RecipeDao {
 	        	logger.log(null, CONTEXT,eAddReview);
 	        } finally {
 	            try {
-	                if (statementAddReview != null)
-	                    statementAddReview.close();
+	                if (statementRecipe != null)
+	                    statementRecipe.close();
 	            } catch (SQLException se2AddReview) {
 	            	logger.log(null, CONTEXT,se2AddReview);
 	            }
 	            try {
-	                if (connAddReview != null)
-	                    connAddReview.close();
+	                if (connectionRecipe != null)
+	                    connectionRecipe.close();
 	            } catch (SQLException seAddReview) {
 	            	logger.log(null, CONTEXT,seAddReview);
 	            }
@@ -269,35 +272,36 @@ public class RecipeDao {
 	    }
 
 	 public static boolean checkReviewDao(String username, String title) {
-		  Statement statementCheckREview = null;
-	      Connection connCheckReview = null;
-	      boolean check = false;
+	      
 	    
 	        try {
 
-	            connCheckReview = DriverManager.getConnection(URL, USER, PASS);
-	            statementCheckREview = connCheckReview.createStatement();
+	            connectionRecipe = DriverManager.getConnection(URL, USER, PASS);
+	            statementRecipe = connectionRecipe.createStatement();
 	            String sql1CheckReview= String.format(Query.CHECKREVIEWQUERY,username,title);
 
-	            ResultSet rsCheckReview = statementCheckREview.executeQuery(sql1CheckReview);
-	            
-	            if(rsCheckReview.next()) {
-					check= rsCheckReview.getBoolean("rev");
-				}
-			
+	            int rsCheckReview = statementRecipe.executeUpdate(sql1CheckReview);
+	            if (rsCheckReview != 1) {
+	    	        
+	                return false;
+	            }
+
+	            statementRecipe.close();
+	            connectionRecipe.close();
+	            return true;
 		} catch(Exception eCheckReview) {
 			logger.log(null, CONTEXT,eCheckReview);
 		} finally {
 			try {
-				if(connection != null)
-					connection.close();
-				if(statementCheckREview != null)
-					statementCheckREview.close();
+				if(connectionRecipe != null)
+					connectionRecipe.close();
+				if(statementRecipe != null)
+					statementRecipe.close();
 			} catch (SQLException eCheckReview) {
 				logger.log(null, CONTEXT,eCheckReview);
 			}
 		}
-		return check;		 
+		return false;		 
 	    }
 }
 

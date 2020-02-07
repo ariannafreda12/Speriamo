@@ -22,33 +22,35 @@ public class UserDao {
 	 private static final String URL = "jdbc:postgresql://localhost:5432/postgres";
 	 private static final String USER = "postgres";
 	 private static final String PASS = "postgres";
-	 private static Connection connection = null;
+	 private static Connection connectionUser = null;
+	 private static Statement statementUser= null;
+	 private static ResultSet rsUser= null;
 	 
 	 static Logger logger = Logger.getAnonymousLogger();
 	 private static final String CONTEXT = "context";
 	
 	  public static User loginDao(String username, String password) {
-		 
-		  Statement statementLogin = null;
 		  User u = null;
 			try {
 				
-				connection = DriverManager.getConnection(URL, USER, PASS);
-				statementLogin = connection.createStatement();
+				connectionUser = DriverManager.getConnection(URL, USER, PASS);
+				statementUser = connectionUser.createStatement();
 				String sqlLogin = String.format(Query.LOGINQUERY, username, password);
-				ResultSet rsLogin = statementLogin.executeQuery(sqlLogin);
+				rsUser = statementUser.executeQuery(sqlLogin);
 				
-				if(rsLogin.next()) {
-					u = new User(username, password, rsLogin.getString("email"));
+				if(rsUser.next()) {
+					u = new User(username, password, rsUser.getString("email"));
 				}
 			} catch(Exception eLogin) {
 				logger.log(null, CONTEXT,eLogin);
 			} finally {
 				try {
-					if(connection != null)
-						connection.close();
-					if(statementLogin != null)
-						statementLogin.close();
+					if(connectionUser != null)
+						connectionUser.close();
+					if(statementUser != null)
+						statementUser.close();
+					if(rsUser != null)
+						rsUser.close();
 				} catch (SQLException eLogin) {
 					logger.log(null, CONTEXT,eLogin);
 				}
@@ -60,23 +62,22 @@ public class UserDao {
 	  
 	
 	  public static boolean registrationDao(String username, String password, String email) {
-		  Statement statementRegistration = null;
-	        Connection connecctionRegistration = null;
+		 
 	        try {
 	           
-	            connecctionRegistration = DriverManager.getConnection(URL, USER, PASS);
-	            statementRegistration = connecctionRegistration.createStatement();
+	            connectionUser = DriverManager.getConnection(URL, USER, PASS);
+	            statementUser = connectionUser.createStatement();
 	            String sqlRegistration= String.format(Query.REGQUERY, username, password, email);
-	            statementRegistration = connecctionRegistration.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-	            int rsRegistration = statementRegistration.executeUpdate(sqlRegistration);
+	            statementUser = connectionUser.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+	            int rsRegistration = statementUser.executeUpdate(sqlRegistration);
 
 	            if (rsRegistration != 1) {
 	             
 	                return false;
 	            }
 
-	            statementRegistration.close();
-	            connecctionRegistration.close();
+	            statementUser.close();
+	            connectionUser.close();
 	            return true;
 
 	        } catch (SQLException seRegistration) {
@@ -85,14 +86,14 @@ public class UserDao {
 	        	logger.log(null, CONTEXT,eRegistration);
 	        } finally {
 	            try {
-	                if (statementRegistration != null)
-	                    statementRegistration.close();
+	                if (statementUser != null)
+	                    statementUser.close();
 	            } catch (SQLException se2Registration) {
 	            	logger.log(null, CONTEXT,se2Registration);
 	            }
 	            try {
-	                if (connecctionRegistration != null)
-	                    connecctionRegistration.close();
+	                if (connectionUser != null)
+	                    connectionUser.close();
 	            } catch (SQLException seRegistration) {
 	            	logger.log(null, CONTEXT,seRegistration);
 	            }
@@ -102,26 +103,28 @@ public class UserDao {
 	    }
 
 	  public static User foundUserDao(String username) {
-			Statement statementFoundUser = null;
+			
 			User u = null;
 				try {
 					
-					connection = DriverManager.getConnection(URL, USER, PASS);
-					statementFoundUser = connection.createStatement();
+					connectionUser = DriverManager.getConnection(URL, USER, PASS);
+					statementUser = connectionUser.createStatement();
 					String sqlFoundUser = String.format(Query.FOUNDUSERQUERY, username);
-					ResultSet rsFoundUser = statementFoundUser.executeQuery(sqlFoundUser);
+					rsUser = statementUser.executeQuery(sqlFoundUser);
 					
-					if(rsFoundUser.next()) {
-						u = new User(username, rsFoundUser.getString("password"), rsFoundUser.getString("email"));
+					if(rsUser.next()) {
+						u = new User(username, rsUser.getString("password"), rsUser.getString("email"));
 					}
 				} catch(Exception eFoundUser) {
 					logger.log(null, CONTEXT,eFoundUser);
 				} finally {
 					try {
-						if(connection != null)
-							connection.close();
-						if(statementFoundUser != null)
-							statementFoundUser.close();
+						if(connectionUser != null)
+							connectionUser.close();
+						if(statementUser != null)
+							statementUser.close();
+						if(rsUser != null)
+							rsUser.close();
 					} catch (SQLException eFoundUser) {
 						logger.log(null, CONTEXT,eFoundUser);
 					}
@@ -133,23 +136,22 @@ public class UserDao {
 
 
 		public static boolean changePassword(String username, String password) {
-			 Statement statementPassword = null;
-		        Connection connectionPassword = null;
+			
 		        try {
 		          
-		            connectionPassword = DriverManager.getConnection(URL, USER, PASS);
-		            statementPassword = connectionPassword.createStatement();
+		            connectionUser = DriverManager.getConnection(URL, USER, PASS);
+		            statementUser = connectionUser.createStatement();
 		            String sqlPassword= String.format(Query.CHANGEPASSWORDQUERY, password, username);
-		            statementPassword = connectionPassword.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-		            int rsPassword = statementPassword.executeUpdate(sqlPassword);
+		            statementUser = connectionUser.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+		            int rsPassword = statementUser.executeUpdate(sqlPassword);
 
 		            if (rsPassword != 1) {
 		                return false;
 		            }
 
 		            // STEP 6: Clean-up dell'ambiente
-		            statementPassword.close();
-		            connectionPassword.close();
+		            statementUser.close();
+		            connectionUser.close();
 
 		            return true;
 
@@ -159,14 +161,14 @@ public class UserDao {
 		        	logger.log(null, CONTEXT,ePassword);
 		        } finally {
 		            try {
-		                if (statementPassword != null)
-		                    statementPassword.close();
+		                if (statementUser != null)
+		                    statementUser.close();
 		            } catch (SQLException se2Password) {
 		            	logger.log(null, CONTEXT,se2Password);
 		            }
 		            try {
-		                if (connectionPassword != null)
-		                    connectionPassword.close();
+		                if (connectionUser != null)
+		                    connectionUser.close();
 		            } catch (SQLException sePassword) {
 		            	logger.log(null, CONTEXT,sePassword);
 		            }

@@ -50,6 +50,7 @@ public class Registration {
 	UserBean ub = new UserBean();
 	
 	GraphicController graphicController = new GraphicController();
+	 String lastToken = null;
 	
 	public void closeRegPage(ActionEvent actionEvent)  {
 		
@@ -75,7 +76,7 @@ public class Registration {
 	           boolean matchFound = m.matches();
 	    
 	           StringTokenizer st = new StringTokenizer(mail, ".");
-	           String lastToken = null;
+	          
 	           while (st.hasMoreTokens()) {
 	               lastToken = st.nextToken();
 	           }

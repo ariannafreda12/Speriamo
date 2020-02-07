@@ -17,7 +17,9 @@ public class UserProfileDao {
 	private static final String USER = "postgres";
 	private static final String PASS = "postgres";
 	
-	private static Connection connection = null;
+	private static Connection connectionProfile = null;
+	private static Statement statementProfile = null;
+	private static ResultSet rsProfile=null;
 	
 	
 	private static final String TITLE = "title";
@@ -37,15 +39,14 @@ public class UserProfileDao {
 	
 	
 	 public static boolean saveRecipeDao(String title, String preparation, String difficulty, String category, String time, String necessary,String username) {
-		  Statement statementSaveUserRecipe = null;
-	      Connection connSaveUserRecipe = null;
+		 
 	        try {
 	           
-	            connSaveUserRecipe = DriverManager.getConnection(URL, USER, PASS);
-	            statementSaveUserRecipe = connSaveUserRecipe.createStatement();
+	            connectionProfile = DriverManager.getConnection(URL, USER, PASS);
+	            statementProfile = connectionProfile.createStatement();
 	            String sql1SaveUserRecipe= String.format(Query.SAVEQUERY, title, preparation, difficulty,category,time,necessary,username);
-	            statementSaveUserRecipe = connSaveUserRecipe.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-	            int rsSaveUserRecipe = statementSaveUserRecipe.executeUpdate(sql1SaveUserRecipe);
+	            statementProfile = connectionProfile.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+	            int rsSaveUserRecipe = statementProfile.executeUpdate(sql1SaveUserRecipe);
 
 	            if (rsSaveUserRecipe != 1) {
 	               
@@ -53,8 +54,8 @@ public class UserProfileDao {
 	            }
 
 	            // STEP 6: Clean-up dell'ambiente
-	            statementSaveUserRecipe.close();
-	            connSaveUserRecipe.close();
+	            statementProfile.close();
+	            connectionProfile.close();
 	            return true;
 
 	        } catch (SQLException seSaveUserRecipe) {
@@ -64,14 +65,14 @@ public class UserProfileDao {
 	        	logger.log(null, CONTEXT,eSaveUserRecipe);
 	        } finally {
 	            try {
-	                if (statementSaveUserRecipe != null)
-	                    statementSaveUserRecipe.close();
+	                if (statementProfile != null)
+	                    statementProfile.close();
 	            } catch (SQLException se2SaveUserRecipe) {
 	            	logger.log(null, CONTEXT,se2SaveUserRecipe);
 	            }
 	            try {
-	                if (connSaveUserRecipe != null)
-	                    connSaveUserRecipe.close();
+	                if (connectionProfile != null)
+	                    connectionProfile.close();
 	            } catch (SQLException seSaveUserRecipe) {
 	            	logger.log(null, CONTEXT,seSaveUserRecipe);
 	            }
@@ -81,24 +82,19 @@ public class UserProfileDao {
 	    }
 	
 	public static Set<UserProfile> userRecipeDao(String username) {
-		 Statement statementUserRecipe = null;
+		
 		 UserProfile userprofile = null;
 		 Set<UserProfile> up= new HashSet<>();
 		 
 			try {
 			
-				connection = DriverManager.getConnection(URL, USER, PASS);
-				statementUserRecipe = connection.createStatement();
-				
-					
-					String sqlUserRecipe = String.format(Query.PROFILEQUERY, username);
-			
-					ResultSet rsUserRecipe = statementUserRecipe.executeQuery(sqlUserRecipe);
-					
-					while(rsUserRecipe.next()) {
-						
-						userprofile = new UserProfile(rsUserRecipe.getString(TITLE), rsUserRecipe.getString(PREPARATION),
-								rsUserRecipe.getString(DIFFICULTY), rsUserRecipe.getString(CATEGORY), rsUserRecipe.getString(TIME), rsUserRecipe.getString(NECESSARY),username);
+				connectionProfile = DriverManager.getConnection(URL, USER, PASS);
+				statementProfile = connectionProfile.createStatement();
+				String sqlUserRecipe = String.format(Query.PROFILEQUERY, username);
+				rsProfile = statementProfile.executeQuery(sqlUserRecipe);
+				while(rsProfile.next()) {
+				userprofile = new UserProfile(rsProfile.getString(TITLE), rsProfile.getString(PREPARATION),
+								rsProfile.getString(DIFFICULTY), rsProfile.getString(CATEGORY), rsProfile.getString(TIME), rsProfile.getString(NECESSARY),username);
 			
 								up.add(userprofile);
 								
@@ -109,10 +105,12 @@ public class UserProfileDao {
 				logger.log(null, CONTEXT,eUserRecipe);
 			} finally {
 				try {
-					if(connection != null)
-						connection.close();
-					if(statementUserRecipe != null)
-						statementUserRecipe.close();
+					if(connectionProfile != null)
+						connectionProfile.close();
+					if(statementProfile != null)
+						statementProfile.close();
+					if(rsProfile != null)
+						rsProfile.close();
 				} catch (SQLException eUserRecipe) {
 					logger.log(null, CONTEXT,eUserRecipe);
 				}
@@ -120,21 +118,20 @@ public class UserProfileDao {
 			return up;		 
 	 }
 	 public static UserProfile chooseUserRecipeDao(String title) {
-		 Statement statementChooseUserRecipe = null;
+	
 		 UserProfile up = null;
 			try {
 			
-				connection = DriverManager.getConnection(URL, USER, PASS);
-				statementChooseUserRecipe = connection.createStatement();
+				connectionProfile = DriverManager.getConnection(URL, USER, PASS);
+				statementProfile= connectionProfile.createStatement();
 					
 					String sqlChooseUserRecipe = String.format(Query.USERRECIPEQUERY,title);
 					
 			
-					ResultSet rsChooseUserRecipe = statementChooseUserRecipe.executeQuery(sqlChooseUserRecipe);
+					rsProfile = statementProfile.executeQuery(sqlChooseUserRecipe);
+					if(rsProfile.next()) {
 					
-					if(rsChooseUserRecipe.next()) {
-					
-						up = new UserProfile(rsChooseUserRecipe.getString(TITLE), rsChooseUserRecipe.getString(PREPARATION),rsChooseUserRecipe.getString(DIFFICULTY),  rsChooseUserRecipe.getString(CATEGORY), rsChooseUserRecipe.getString(TIME),rsChooseUserRecipe.getString(NECESSARY),rsChooseUserRecipe.getString(USERNAME));
+						up = new UserProfile(rsProfile.getString(TITLE), rsProfile.getString(PREPARATION),rsProfile.getString(DIFFICULTY),  rsProfile.getString(CATEGORY), rsProfile.getString(TIME),rsProfile.getString(NECESSARY),rsProfile.getString(USERNAME));
 				
 					}
 				
@@ -142,10 +139,12 @@ public class UserProfileDao {
 				logger.log(null, CONTEXT,eChooseUserRecipe);
 			} finally {
 				try {
-					if(connection != null)
-						connection.close();
-					if(statementChooseUserRecipe != null)
-						statementChooseUserRecipe.close();
+					if(connectionProfile != null)
+						connectionProfile.close();
+					if(statementProfile != null)
+						statementProfile.close();
+					if(rsProfile != null)
+						rsProfile.close();
 				} catch (SQLException eChooseUserRecipe) {
 					logger.log(null, CONTEXT,eChooseUserRecipe);
 				}
@@ -154,16 +153,15 @@ public class UserProfileDao {
 	 }
 	 
 	 public static boolean deleteRecipeDao(String title, String username) {
-		  Statement statementDeleteRecipe = null;
-	      Connection connectionDeleteRecipe = null;
+		
 	        try {
 	        
-	            connectionDeleteRecipe = DriverManager.getConnection(URL, USER, PASS);
-	            statementDeleteRecipe = connectionDeleteRecipe.createStatement();
+	            connectionProfile = DriverManager.getConnection(URL, USER, PASS);
+	            statementProfile = connectionProfile.createStatement();
 	            String sql1DeleteRecipe= String.format(Query.DELETERECIPEQUERY,title,username);
 	        
-	            statementDeleteRecipe = connectionDeleteRecipe.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-	            int rsDeleteRecipe = statementDeleteRecipe.executeUpdate(sql1DeleteRecipe);
+	            statementProfile = connectionProfile.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+	            int rsDeleteRecipe = statementProfile.executeUpdate(sql1DeleteRecipe);
 
 	            if (rsDeleteRecipe != 1) {
 	        
@@ -171,8 +169,8 @@ public class UserProfileDao {
 	            }
 
 	            // STEP 6: Clean-up dell'ambiente
-	            statementDeleteRecipe.close();
-	            connectionDeleteRecipe.close();
+	            statementProfile.close();
+	            connectionProfile.close();
 	            return true;
 
 	        } catch (SQLException seDeleteRecipe) {
@@ -181,14 +179,14 @@ public class UserProfileDao {
 	        	logger.log(null, CONTEXT,eDeleteRecipe);
 	        } finally {
 	            try {
-	                if (statementDeleteRecipe != null)
-	                    statementDeleteRecipe.close();
+	                if (statementProfile != null)
+	                    statementProfile.close();
 	            } catch (SQLException se2DeleteRecipe) {
 	            	logger.log(null, CONTEXT,se2DeleteRecipe);
 	            }
 	            try {
-	                if (connectionDeleteRecipe != null)
-	                    connectionDeleteRecipe.close();
+	                if (connectionProfile != null)
+	                    connectionProfile.close();
 	            } catch (SQLException seDeleteRecipe) {
 	            	logger.log(null, CONTEXT,seDeleteRecipe);
 	            }
@@ -196,21 +194,19 @@ public class UserProfileDao {
 	        return false;
 	    }
 public static UserProfile favRecipeDao(String username) {
-		 
-		 Statement statementFavRecipe = null;
 		 UserProfile favRecipe= null;
 		 
 			try {
 				
-				connection = DriverManager.getConnection(URL, USER, PASS);
-				statementFavRecipe = connection.createStatement();
+				connectionProfile = DriverManager.getConnection(URL, USER, PASS);
+				statementProfile = connectionProfile.createStatement();
 			
 				String sqlFavRecipe = String.format(Query.FAVQUERY, username);
-				ResultSet rsFavRecipe = statementFavRecipe.executeQuery(sqlFavRecipe);
+				rsProfile = statementProfile.executeQuery(sqlFavRecipe);
 				
-				while(rsFavRecipe.next()) {
-				favRecipe = new UserProfile(rsFavRecipe.getString(TITLE), rsFavRecipe.getString(PREPARATION),
-							 rsFavRecipe.getString(DIFFICULTY),  rsFavRecipe.getString(CATEGORY), rsFavRecipe.getString(TIME), rsFavRecipe.getString(NECESSARY),username);
+				while(rsProfile.next()) {
+				favRecipe = new UserProfile(rsProfile.getString(TITLE), rsProfile.getString(PREPARATION),
+							 rsProfile.getString(DIFFICULTY),  rsProfile.getString(CATEGORY), rsProfile.getString(TIME), rsProfile.getString(NECESSARY),username);
 				
 				}
 				
@@ -218,10 +214,12 @@ public static UserProfile favRecipeDao(String username) {
 				logger.log(null, CONTEXT,eFavRecipe);				
 			} finally {
 				try {
-					if(connection != null)
-						connection.close();
-					if(statementFavRecipe != null)
-						statementFavRecipe.close();
+					if(connectionProfile != null)
+						connectionProfile.close();
+					if(statementProfile != null)
+						statementProfile.close();
+					if(rsProfile != null)
+						rsProfile.close();
 				} catch (SQLException eFavRecipe) {
 					logger.log(null, CONTEXT,eFavRecipe);
 				}
