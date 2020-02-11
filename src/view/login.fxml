@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.Login">
+   <children>
+      <ImageView fitHeight="600.0" fitWidth="800.0">
+         <image>
+            <Image url="@../img/1.jpg" />
+         </image>
+      </ImageView>
+      <TextField fx:id="userField" layoutX="454.0" layoutY="138.0" prefHeight="32.0" prefWidth="288.0">
+         <font>
+            <Font name="System Italic" size="17.0" />
+         </font>
+      </TextField>
+      <PasswordField fx:id="passField" layoutX="454.0" layoutY="202.0" prefHeight="32.0" prefWidth="288.0">
+         <font>
+            <Font name="System Italic" size="17.0" />
+         </font>
+      </PasswordField>
+      <Button fx:id="btnLogin" layoutX="557.0" layoutY="251.0" mnemonicParsing="false" onAction="#loginMethod" prefHeight="9.0" prefWidth="89.0" text="Login" AnchorPane.topAnchor="251.0">
+         <font>
+            <Font name="System Bold Italic" size="19.0" />
+         </font>
+         <effect>
+            <DropShadow blurType="ONE_PASS_BOX" height="6.17" radius="2.585" width="6.17" />
+         </effect>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+      <Button fx:id="btnLoginFb" layoutX="504.0" layoutY="322.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="44.0" prefWidth="196.0">
+         <font>
+            <Font name="System Bold Italic" size="24.0" />
+         </font>
+      </Button>
+      <ImageView fx:id="loginFB" fitHeight="39.0" fitWidth="189.0" layoutX="508.0" layoutY="325.0" onMouseClicked="#goTo">
+         <image>
+            <Image url="@../img/images%20(1).jpg" />
+         </image>
+      </ImageView>
+      <Text fx:id="forgotPassText" layoutX="525.0" layoutY="466.0" onMouseClicked="#forgotPassword" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Forgot password?" underline="true">
+         <font>
+            <Font name="System Bold Italic" size="19.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Text>
+      <Text fx:id="registrationText" accessibleRole="BUTTON" layoutX="602.0" layoutY="498.0" onMouseClicked="#goToRegistrationPage" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Create account" underline="true">
+         <font>
+            <Font name="System Bold Italic" size="19.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Text>
+      <Text layoutX="480.0" layoutY="498.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No account?">
+         <font>
+            <Font name="System Bold Italic" size="19.0" />
+         </font>
+      </Text>
+      <Text fx:id="recipesText1" layoutX="456.0" layoutY="130.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username">
+         <font>
+            <Font name="System Bold Italic" size="19.0" />
+         </font>
+      </Text>
+      <Text fx:id="recipesText11" layoutX="454.0" layoutY="197.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password">
+         <font>
+            <Font name="System Bold Italic" size="19.0" />
+         </font>
+      </Text>
+      <Text fx:id="recipesText12" layoutX="593.0" layoutY="384.0" strokeType="OUTSIDE" strokeWidth="0.0" text="or">
+         <font>
+            <Font name="System Bold Italic" size="17.0" />
+         </font>
+      </Text>
+      <Text fx:id="recipesText121" layoutX="590.0" layoutY="318.0" strokeType="OUTSIDE" strokeWidth="0.0" text="or">
+         <font>
+            <Font name="System Bold Italic" size="17.0" />
+         </font>
+      </Text>
+      <Button fx:id="btnVisitor" layoutX="505.0" layoutY="396.0" mnemonicParsing="false" onMouseClicked="#goTo" prefHeight="42.0" prefWidth="196.0" text="Continue as visitor">
+         <font>
+            <Font name="System Bold Italic" size="19.0" />
+         </font>
+         <effect>
+            <DropShadow blurType="ONE_PASS_BOX" height="6.17" radius="2.585" width="6.17" />
+         </effect>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+   </children>
+</AnchorPane>
