@@ -27,7 +27,6 @@ public class RecipeDao {
 	private static Statement statementRecipe = null;
 	private static ResultSet rsRecipe = null;
 	
-	
 	private static final String TITLE = "title";
 	private static final String CATEGORY= "category";
 	private static final String DIFFICULTY = "difficulty";
@@ -302,8 +301,8 @@ public class RecipeDao {
 	                
 	            }
 
-		}catch(Exception eChooseRecipe) {
-			logger.log(null, CONTEXT,eChooseRecipe);
+		}catch(Exception eCheckRec) {
+			logger.log(null, CONTEXT,eCheckRec);
 		} finally {
 			try {
 				if(connectionRecipe != null)
@@ -312,12 +311,11 @@ public class RecipeDao {
 					statementRecipe.close();
 				if(rsRecipe != null)
 					rsRecipe.close();
-			} catch (SQLException eChooseRecipe) {
-				logger.log(null, CONTEXT,eChooseRecipe);
+			} catch (SQLException eCheckRec) {
+				logger.log(null, CONTEXT,eCheckRec);
 			}
 		}
 		return checkRev;
 	    }
 
 }
-

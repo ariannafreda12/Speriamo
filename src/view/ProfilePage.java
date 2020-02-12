@@ -90,7 +90,7 @@ public class ProfilePage {
         graphicController.homePage();
 	}
 
-	public void logOut(MouseEvent me){
+	public void logOutProfile(MouseEvent me){
 		LoginManager controller = new LoginManager();
         controller.resetUser();
         ((Node)(me.getSource())).getScene().getWindow().hide();

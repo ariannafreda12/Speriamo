@@ -10,8 +10,6 @@ import controller.GraphicController;
 import controller.LoginManager;
 import controller.RecipeManager;
 import controller.UserProfileManager;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -47,7 +45,7 @@ public class RecipePage{
 	UserProfileManager upm= UserProfileManager.getInstance();
 	
 	private Label reviewLabel = new Label();
-	private Button likebtn = new Button();	
+	private Button likebtn = new Button();	 
 	
 	static Logger logger = Logger.getAnonymousLogger();
 	private static final String CONTEXT= "context";
@@ -227,9 +225,7 @@ public class RecipePage{
 				reviewLabel.setText("You like it!");		
 			}
 	    	
-	    	likebtn.setOnAction(new EventHandler<ActionEvent>() {
-			
-	    	public void handle(ActionEvent event) {
+	    	likebtn.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {  
 				boolean checkRev=reviewStudy(rb.getRecBeanTitle(),ub.getUsername(),rb.getRecBeanReview());
 						 if(checkRev) {
 							 likebtn.setVisible(false); 
@@ -237,7 +233,7 @@ public class RecipePage{
 							 
 						 }
 						
-				}}
+				}
 			);
 	    	
 	    
