@@ -226,8 +226,8 @@ public class RecipePage{
 			}
 	    	
 	    	likebtn.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {  
-				boolean checkRev=reviewStudy(rb.getRecBeanTitle(),ub.getUsername(),rb.getRecBeanReview());
-						 if(checkRev) {
+				
+						 if(reviewStudy(rb.getRecBeanTitle(),ub.getUsername(),rb.getRecBeanReview())) {
 							 likebtn.setVisible(false); 
 							 reviewLabel.setText("You like it!");
 							 
